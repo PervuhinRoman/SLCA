@@ -1,0 +1,4 @@
+*.pdf binary
+*.docx binary
+# Markdown uses two trailing spaces for explicit line breaks.
+*.md whitespace=-blank-at-eol

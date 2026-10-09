@@ -1,0 +1,39 @@
+StudentLedger LR2 — local agent verification, 2026-10-09 (Europe/Moscow)
+Scope: local macOS host, NOT TEST/STAGE/PROD VM evidence.
+Environment: Darwin arm64; Python 3.12.10; isolated .venv.
+
+1. python3 -m venv .venv
+   Completed successfully.
+2. .venv/bin/python -m pip install -r requirements.txt
+   Completed successfully after granting network access outside sandbox.
+   Installed all 13 pinned runtime dependencies.
+   Initial sandbox attempt failed resolving the package index.
+3. .venv/bin/python -m pip check
+   No broken requirements found.
+4. .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+   Initial sandbox attempt: operation not permitted binding port 8000.
+   Retried with approved permission outside sandbox:
+   INFO: Application startup complete.
+   INFO: Uvicorn running on http://127.0.0.1:8000
+5. curl --fail-with-body --max-time 5 -i http://127.0.0.1:8000/health
+   Initial sandbox request could not connect; approved external request succeeded.
+   Exit code: 0
+   HTTP/1.1 200 OK
+   date: Fri, 09 Oct 2026 17:52:48 GMT
+   server: uvicorn
+   content-length: 15
+   content-type: application/json
+
+   {"status":"ok"}
+
+6. Ctrl+C sent to the server process after verification.
+   INFO: Application shutdown complete.
+   Exit code: 0
+
+No VM was created or checked. No VM IP, remote URL, clone, all-to-all ping,
+Linux deployment, database readiness or product acceptance result is asserted.
+
+Follow-up 2026-10-09 20:56 Europe/Moscow:
+Restarted the same Uvicorn command at the user's request; left running
+in session 66528. Repeated curl returned exit code 0, HTTP/1.1 200 OK,
+Date: Fri, 09 Oct 2026 17:56:11 GMT, body: {"status":"ok"}.
