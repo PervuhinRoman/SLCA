@@ -2,8 +2,117 @@
 
 ## Current lab
 
-**LR2 — Виртуализация / IN_PROGRESS** (обновлено 2026-10-09).
-Agent work готова; Human work и Report ожидаются.
+**LR2 — Виртуализация / READY_FOR_REPORT** (обновлено 2026-10-10).
+Три ВМ развёрнуты и проверены; evidence собран. Осталось создать отчёт ЛР2.
+Работа передаётся через временную ветку `feature/lr2-vms-and-evidence` → PR в `dev`
+(ADR-009, ADR-015).
+
+## Ход выполнения ЛР2 на хосте исполнителя (2026-10-09)
+
+Выполнено агентом по прямому указанию текущего исполнителя:
+
+- Образ `ubuntu-24.04.5-live-server-amd64.iso` (4 080 486 400 байт)
+  проверен: SHA256 `97f3d7ff…afae0fd8` совпадает с официальным
+  `releases.ubuntu.com/24.04/SHA256SUMS`. Evidence:
+  `docs/evidence/lr02/iso-sha256-host.txt`.
+- Гипервизор: Oracle VirtualBox 7.2.20 на Windows 10 Pro 22H2 (ADR-016).
+- Созданы и зарегистрированы три ВМ: `studentledger-test`,
+  `studentledger-stage`, `studentledger-prod`
+  (`C:\Users\Sergey\VirtualBox VMs\StudentLedger`).
+  Параметры: 2 vCPU, 3 ГБ RAM, диск VDI 25 ГБ, видеопамять 64 МБ,
+  тип ОС `Ubuntu24_LTS_64` (ADR-017).
+- Сеть: `nic1` NAT, `nic2` host-only `VirtualBox Host-Only Ethernet Adapter`
+  (`192.168.56.0/24`). Адреса: TEST `.11`, STAGE `.12`, PROD `.13`.
+  MAC внутренней сети: `08:00:27:51:a0:01/02/03` (ADR-020).
+- Проброс SSH с хоста: `127.0.0.1:2221` → TEST, `:2222` → STAGE,
+  `:2223` → PROD.
+- Установка выполняется автоматически: `VBoxManage unattended install`
+  (cloud-init autoinstall), пользователь `student`, Xubuntu minimal
+  как минимальный GUI (ADR-019, ADR-021).
+- Подготовлены и лежат в репозитории: `scripts/lr02/provision-vm.sh` и
+  три файла Netplan `scripts/lr02/netplan-192.168.56.1x-*.yaml`.
+
+**Сбой и его причина (зафиксировано):** первая автоматическая установка TEST
+2026-10-09 23:05 упала через минуту: в логе ВМ было
+`539MB available` при запросе 3 ГБ, далее `VERR_NO_PAGE_MEMORY` и
+`GURU_MEDITATION`. Причина — нехватка физической памяти хоста (15,7 ГБ всего),
+а не дефект конфигурации. Установка перезапущена после освобождения памяти;
+порядок работы и ограничение описаны в ADR-022.
+Evidence: `docs/evidence/lr02/vbox-test-installer-crash.png`,
+`docs/evidence/lr02/unattended-install-test.log`,
+`docs/evidence/lr02/install-memory-watch.log`.
+
+**Состояние на момент передачи:** установка TEST выполнялась; STAGE и PROD
+были созданы без ОС. Ниже приведён итог после завершения работ — он отменяет
+эту промежуточную запись.
+
+## Фактический результат на 2026-10-10 (продолжение)
+
+- ОС Ubuntu 24.04.5 LTS установлена автоматически на всех трёх ВМ
+  (`VBoxManage unattended install`). Проверка: `hostnamectl`, `uname -r`.
+- **TEST подтверждён фактически** (`docs/evidence/lr02/test-system-and-app.txt`):
+  hostname `studentledger-test`, ядро 6.8.0-146-generic, x86-64;
+  git 2.43.0, Python 3.12.3; минимальный GUI `xubuntu-desktop-minimal`
+  + lightdm (снимок `02-test-gui.png`); внутренний адрес `192.168.56.11/24`
+  на интерфейсе `slca-internal` (MAC `08:00:27:51:a0:01`);
+  реальный clone `https://github.com/PervuhinRoman/SLCA.git`, ветка `master`,
+  commit `816ac3eca4fcf73d2de12a65b907916a97fcaeee`;
+  `.venv` + `pip check` → `No broken requirements found`;
+  служба `studentledger.service` включена (автозапуск) и активна;
+  `GET /health` → HTTP 200, `{"status":"ok"}` — проверено и внутри ВМ,
+  и с хоста по адресу `http://192.168.56.11:8000/health`.
+- Графическая оболочка запущена и проверена снимком экрана. Расход памяти
+  внутри ВМ: 414 МБ без графики, 486 МБ с запущенным XFCE/LightDM (из 3 ГБ).
+- Доступ с хоста: SSH `127.0.0.1:2221` → TEST. Проброс порта приложения
+  `127.0.0.1:8001` на хосте сбрасывает соединение (на хосте активен
+  VPN-адаптер `happ-xray`); рабочий способ — прямой внутренний адрес.
+- Доступ к репозиторию: по решению текущего исполнителя репозиторий
+  SLCA сделан публичным; секреты в Git не добавлялись.
+
+**Что ещё не подтверждено:** GUI и статический адрес на STAGE и PROD,
+шесть ping all-to-all, клоны на STAGE/PROD. Эти пункты в работе.
+
+## Итог 2026-10-10: три стенда ЛР2 развёрнуты и проверены
+
+Все три ВМ работают одновременно, ОС установлена, GUI запущен, сеть проверена.
+
+| Стенд | Hostname | IP внутренней сети | MAC | GUI |
+|---|---|---|---|---|
+| TEST | `studentledger-test` | 192.168.56.11 | 08:00:27:51:a0:01 | XFCE + LightDM |
+| STAGE | `studentledger-stage` | 192.168.56.12 | 08:00:27:51:a0:02 | XFCE + LightDM |
+| PROD | `studentledger-prod` | 192.168.56.13 | 08:00:27:51:a0:03 | XFCE + LightDM |
+
+Проверено фактически:
+
+- **шесть ping all-to-all**: TEST↔STAGE, TEST↔PROD, STAGE↔PROD — везде
+  «4 packets transmitted, 4 received, 0% packet loss»;
+- **инструменты пункта 5 методички** на всех трёх ВМ: git 2.43.0,
+  Python 3.12.3, venv работает;
+- **реальный clone** одной и той же ветки и commit
+  `816ac3eca4fcf73d2de12a65b907916a97fcaeee` на всех трёх ВМ,
+  `.venv` + `pip check` → `No broken requirements found`;
+- **служба `studentledger.service`** на всех трёх ВМ: `enabled` (автозапуск)
+  и `active`; на TEST — как требует ЛР2, на STAGE/PROD тем же способом;
+- **`GET /health`** → HTTP 200 `{"status":"ok"}`: проверено внутри ВМ
+  и с хоста по адресам `http://192.168.56.11:8000/health`,
+  `http://192.168.56.12:8000/health`, `http://192.168.56.13:8000/health`;
+- **графический интерфейс** запущен на всех трёх ВМ, экраны входа
+  с соответствующими hostname сохранены;
+- расход памяти внутри ВМ с запущенным XFCE/LightDM: 463/394/389 МБ из 3 ГБ —
+  то есть минимальный GUI без потери производительности.
+
+Подтверждения: `docs/evidence/lr02/README.md` (чек-лист и таблица файлов),
+`host-view.txt`, `test-full.txt`, `stage-full.txt`, `prod-full.txt`,
+PNG-экраны `01`–`04`.
+
+Ограничения, которые нужно назвать в отчёте честно:
+
+- установка ОС выполнена автоматически, поэтому кадров ручного установщика нет;
+  вместо них лог установки и экраны консоли;
+- первая попытка установки TEST упала из-за нехватки памяти хоста (ADR-022);
+- проброс порта приложения на `127.0.0.1` сбрасывается из-за VPN-адаптера
+  на хосте, поэтому используется прямой внутренний адрес;
+- репозиторий SLCA по решению исполнителя сделан публичным.
 
 ## Completed
 

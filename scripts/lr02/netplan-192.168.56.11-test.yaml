@@ -1,0 +1,15 @@
+# StudentLedger LR2 — статический адрес внутреннего сегмента, ВМ TEST.
+# Файл предназначен для /etc/netplan/60-studentledger.yaml на studentledger-test.
+# Сопоставление по MAC, а не по имени интерфейса: имя enp0sX зависит от порядка
+# адаптеров и не должно угадываться.
+network:
+  version: 2
+  ethernets:
+    slca-internal:
+      match:
+        macaddress: "08:00:27:51:a0:01"
+      set-name: slca-internal
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.56.11/24

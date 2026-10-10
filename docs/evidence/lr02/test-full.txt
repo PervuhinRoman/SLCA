@@ -1,0 +1,81 @@
+﻿===== StudentLedger LR2 evidence =====
+collected: 2026-10-09T21:33:22+00:00
+hostname: studentledger-test
+
+----- OS and architecture -----
+ Static hostname: studentledger-test
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: fa29038245ae4a2dbbcdadadec5e45cb
+         Boot ID: 3eef8aec3fbd40f29291eaf5d2f5effa
+  Virtualization: oracle
+Operating System: Ubuntu 24.04.5 LTS
+          Kernel: Linux 6.8.0-146-generic
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+6.8.0-146-generic
+x86_64
+
+----- required tools (LR2 item 5) -----
+git version 2.43.0
+Python 3.12.3
+Python 3.12.3
+
+----- minimal GUI -----
+lightdm 1.30.0-0ubuntu14
+xubuntu-desktop-minimal 2.262
+indirect
+17937 /usr/sbin/lightdm
+17944 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+
+----- memory in use -----
+               total        used        free      shared  buff/cache   available
+Mem:            2972         463         724           5        1984        2508
+
+----- network interfaces -----
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+enp0s3           UP             08:00:27:34:63:7f <BROADCAST,MULTICAST,UP,LOWER_UP>
+slca-internal    UP             08:00:27:51:a0:01 <BROADCAST,MULTICAST,UP,LOWER_UP>
+lo               UNKNOWN        127.0.0.1/8
+enp0s3           UP             10.0.2.15/24 metric 100
+slca-internal    UP             192.168.56.11/24
+default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100
+10.0.2.2 dev enp0s3 proto dhcp scope link src 10.0.2.15 metric 100
+172.19.0.2 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
+192.168.11.1 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
+192.168.56.0/24 dev slca-internal proto kernel scope link src 192.168.56.11
+
+----- static address of the internal segment -----
+netplan file not found
+
+----- application on 192.168.56.11 -----
+enabled
+active
+17907 /home/student/StudentLedger/.venv/bin/python -m uvicorn app.main:app --host 192.168.56.11 --port 8000
+HTTP/1.1 200 OK
+date: Fri, 09 Oct 2026 21:33:25 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+
+{"status":"ok"}
+----- project clone -----
+origin	https://github.com/PervuhinRoman/SLCA.git (fetch)
+origin	https://github.com/PervuhinRoman/SLCA.git (push)
+master
+816ac3eca4fcf73d2de12a65b907916a97fcaeee
+816ac3e Require explicit notice of lab assignment conflicts
+Python 3.12.3
+No broken requirements found.
+
+----- ping all-to-all (LR2 item 4) -----
+--- 192.168.56.11 -> 192.168.56.12
+--- 192.168.56.12 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3097ms
+rtt min/avg/max/mdev = 0.248/0.334/0.566/0.134 ms
+--- 192.168.56.11 -> 192.168.56.13
+--- 192.168.56.13 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3070ms
+rtt min/avg/max/mdev = 0.226/0.270/0.369/0.057 ms
+
+===== end of evidence =====

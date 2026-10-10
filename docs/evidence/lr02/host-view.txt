@@ -1,0 +1,92 @@
+﻿===== StudentLedger LR2 - view from the Windows host =====
+collected: 2026-10-10T00:35:47.9785093+03:00
+
+----- VirtualBox version -----
+7.2.20r175154
+
+----- running VMs -----
+"studentledger-test" {40e15070-15a1-4dc5-a841-32496c714882}
+"studentledger-stage" {eb0306ef-e0c6-4ab9-a8a9-b26c3d21962b}
+"studentledger-prod" {1521b231-5489-4bbc-99f0-d44d5e59bf06}
+
+----- host-only segment addresses of the guests -----
+studentledger-test : Value: 192.168.56.11 Value: 08002751A001
+studentledger-stage : Value: 192.168.56.12 Value: 08002751A002
+studentledger-prod : Value: 192.168.56.13 Value: 08002751A003
+
+----- host -> guest ping -----
+192.168.56.11 : replies=4 failed=0
+192.168.56.12 : replies=4 failed=0
+192.168.56.13 : replies=4 failed=0
+
+----- host -> application /health -----
+--- 192.168.56.11
+HTTP/1.1 200 OK
+date: Fri, 09 Oct 2026 21:35:57 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+
+{"status":"ok"}
+--- 192.168.56.12
+HTTP/1.1 200 OK
+date: Fri, 09 Oct 2026 21:35:57 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+
+{"status":"ok"}
+--- 192.168.56.13
+HTTP/1.1 200 OK
+date: Fri, 09 Oct 2026 21:35:55 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+
+{"status":"ok"}
+
+----- netplan of each guest (static address of the internal segment) -----
+--- studentledger-test
+# StudentLedger LR2 — статический адрес внутреннего сегмента, ВМ TEST.
+# Файл предназначен для /etc/netplan/60-studentledger.yaml на studentledger-test.
+# Сопоставление по MAC, а не по имени интерфейса: имя enp0sX зависит от порядка
+# адаптеров и не должно угадываться.
+network:
+  version: 2
+  ethernets:
+    slca-internal:
+      match:
+        macaddress: "08:00:27:51:a0:01"
+      set-name: slca-internal
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.56.11/24
+--- studentledger-stage
+# StudentLedger LR2 — статический адрес внутреннего сегмента, ВМ STAGE.
+# Файл предназначен для /etc/netplan/60-studentledger.yaml на studentledger-stage.
+network:
+  version: 2
+  ethernets:
+    slca-internal:
+      match:
+        macaddress: "08:00:27:51:a0:02"
+      set-name: slca-internal
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.56.12/24
+--- studentledger-prod
+# StudentLedger LR2 — статический адрес внутреннего сегмента, ВМ PROD.
+# Файл предназначен для /etc/netplan/60-studentledger.yaml на studentledger-prod.
+network:
+  version: 2
+  ethernets:
+    slca-internal:
+      match:
+        macaddress: "08:00:27:51:a0:03"
+      set-name: slca-internal
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.56.13/24
