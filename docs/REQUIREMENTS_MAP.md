@@ -9,11 +9,11 @@
 
 | ID | Реализация / подготовка | Проверка и ограничение |
 |---|---|---|
-| SYS-01, SW-01 | `app/main.py`, `requirements.txt`, `README.md` | HTTP-прототип; локальный smoke в `docs/evidence/lr02/agent-local-check.txt`; полного запуска продукта с БД пока нет |
+| SYS-01, SW-01 | `app/main.py`, `requirements.txt`, `README.md` | Основа APP-01 дополнена; исходный локальный smoke в `docs/evidence/lr02/agent-local-check.txt`; полной приёмки продукта пока нет |
 | SW-03, AC-01 | Исходники и документы опубликованы в `PervuhinRoman/SLCA`, ветка `master`, начальный коммит `603852f` | Push успешен; доступ команды и clone на TEST ещё не подтверждены |
 | HW-01 | Ubuntu и схема трёх ВМ в `docs/LR2_RUNBOOK.md` | Фактическое создание ВМ ожидается |
-| SEC-03, SW-04 | `.gitignore` исключает `.env`, ключи | Только подготовка; управление секретами приложения ещё не реализовано |
-| G-05, AC-02 | `/health` проверяет HTTP-процесс | Проверка подключения к PostgreSQL отсутствует; требования не закрыты |
+| SEC-03, SW-04 | `.gitignore` исключает `.env`, ключи | APP-01: SecretStr/.env, без значений в логах; JWT-ключи — APP-02 |
+| G-05, AC-02 | `/health` проверяет HTTP-процесс | APP-01: app.db.check отдельно проверяет БД; запуск одной командой ещё отсутствует |
 
 ## Functional requirements
 
@@ -40,22 +40,22 @@
 |---|---|---|---|
 | SEC-01 | Обязательная аутентификация | TBD | TBD |
 | SEC-02 | БД не публикуется наружу | TBD | TBD |
-| SEC-03 | Секреты вне репозитория | TBD | TBD |
-| SEC-04 | Валидация + ORM/parameterized queries | TBD | TBD |
-| SEC-05 | Безопасное журналирование ошибок | TBD | TBD |
-| SEC-06 | Backup перед изменением схемы | TBD | TBD |
+| SEC-03 | Секреты вне репозитория | `app/config.py`, `.env.example`, `.gitignore` | `test_foundation.py`: скрытие конфигурации; JWT ещё нет |
+| SEC-04 | Валидация + ORM/parameterized queries | `app/db/models.py`, `session.py`; основа, без пользовательского ввода | `test_database.py`: constraints, SQL как данные; формы позже |
+| SEC-05 | Безопасное журналирование ошибок | `app/logging.py`, `app/main.py`, `migrations/env.py`; частично | `test_foundation.py`, evidence отказа БД; auth ещё нет |
+| SEC-06 | Backup перед изменением схемы | `docs/APP01_DATABASE.md`; ручная процедура | `docs/evidence/app-01-foundation.md`: реальное тестовое восстановление; стенды позже |
 | SEC-07 | JWT access/refresh | TBD | TBD |
 | SEC-08 | Hash passwords | TBD | TBD |
 | SEC-09 | RBAC enforcement | TBD | TBD |
-| SEC-10 | Audit log | TBD | TBD |
+| SEC-10 | Audit log | `AuditLog` и атомарная транзакция; только основа | Откат данных и аудита проверен; аудит функций пока TBD |
 
 ## Data requirements
 
 | ID | Кратко | Implementation | Tests |
 |---|---|---|---|
-| DATA-01 | PK/FK | TBD | TBD |
+| DATA-01 | PK/FK | Миграция `0001`, User/Student/AuditLog/RefreshSession | `test_database.py`; остальные сущности позже |
 | DATA-02 | Grade только для существующих Student/Discipline | TBD | TBD |
-| DATA-03 | Ссылочная целостность | TBD | TBD |
+| DATA-03 | Ссылочная целостность | FK RESTRICT, уникальная User–Student 1:1 | `test_database.py`: отсутствующий User, запрет удаления/дубликатов |
 | DATA-04 | Persistence после рестарта | TBD | TBD |
 
 ## Acceptance
@@ -66,7 +66,7 @@
 
 [LABS_PLAN.md](LABS_PLAN.md) содержит APP-01–10 только для приложения.
 Инфраструктура описана в разделах лабораторных и не считается PR приложения.
-Все TBD сохранены; план не подтверждает реализацию.
+TBD обозначает оставшуюся работу; подтверждённая основа APP-01 указана выше.
 
 | Требования / область | План |
 |---|---|
@@ -95,4 +95,18 @@ ADR-009 принят, ADR-012 заменён. Реализация SW-09 ещё 
 dev/prod защищены, default dev, master заблокирована. До ЛР5 разрешён
 merge без чужого approval — явное временное отступление от SW-09 (ADR-014).
 Для выполнения требования ещё нужны review другого участника, CI и deploy.
-CI отсутствует; APP-01–03 не выполняются. FR/SEC остаются TBD.
+CI отсутствует. APP-01 подготовлен 2026-10-12; APP-02/03 ещё не начаты.
+FR остаются TBD; частичная реализация SEC указана выше.
+
+
+## Результат APP-01 — 2026-10-12
+
+SYS-03, SW-02/06: PostgreSQL 16 и ORM/миграция проверены локально.
+SW-01/04/08: закреплены зависимости основы, env test/stage/prod; passlib и
+python-jose добавляются с аутентификацией APP-02. INF-01/02 реализованы
+только для четырёх таблиц APP-01. REL-01/03: ограничения БД и атомарность
+проверены, пользовательских форм ещё нет. REL-02: безопасный отказ БД и
+диагностика; REL-04: повторный запуск/соединение проверены локально.
+DATA-04 и общие AC не закрыты локальным restart: нужны продуктовый сценарий,
+контейнеризация со своим постоянным томом и реальные стенды.
+Все результаты и ограничения: `docs/evidence/app-01-foundation.md`.
