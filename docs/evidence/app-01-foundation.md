@@ -19,7 +19,7 @@
 alembic upgrade head: exit 0, revision 0001
 python -m app.db.check: Подключение к PostgreSQL успешно.
 alembic check: No new upgrade operations detected.
-python -m pytest -q: 28 passed, 1 warning in 0.97s (нет skipped)
+python -m pytest -q: 28 passed, 1 warning in 1.10s (нет skipped)
 python -m pip check: No broken requirements found.
 ```
 
@@ -60,7 +60,7 @@ Uvicorn запущен отдельно на loopback, проверен реал
 При остановленном контейнере CLI подключения завершилась с кодом 1,
 журнал содержал OperationalError без DSN/пароля; HTTP liveness остался 200.
 Проверочный HTTP-процесс остановлен. Backup содержит только синтетические
-данные и находится вне Git. Изолированный контейнер после проверок удаляется.
+данные и находится вне Git. Изолированный контейнер после проверок удалён.
 
 ## Границы подтверждения
 
@@ -72,3 +72,12 @@ TEST/STAGE/PROD не проверялись и не объявляются го�
 
 Перед публикацией проверяются diff, состав файлов, исключение `.env`/окружения
 и backup. SHA и URL PR фиксируются в передаче после успешного ответа GitHub.
+
+
+## Публикация
+
+Коммит реализации `c9c5aa6` отправлен в `origin/feature/app-01-foundation`.
+[PR #3](https://github.com/PervuhinRoman/SLCA/pull/3): base `dev`, head
+`feature/app-01-foundation`, состояние OPEN. Remote SHA проверен, upstream
+настроен. Commit/push финальной записи передачи выполняется в ту же ветку;
+финальный SHA сообщается в ответе. CI и merge отсутствуют.
