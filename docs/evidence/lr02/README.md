@@ -1,13 +1,13 @@
 # ЛР2 — фактические подтверждения
 
 Статус: **реальные ВМ созданы и проверены на хосте текущего исполнителя
-2026-10-09/10**. Ниже — только то, что подтверждено выполнением команд.
-Пункты, требующие ручных скриншотов человека, отмечены отдельно.
+2026-10-09/10; повторная проверка со скриншотами выполнена 17.10.2026**.
+Ниже — только то, что подтверждено выполнением команд.
 
 2026-10-09: текущий исполнитель подтвердил доступность локального
 `http://127.0.0.1:8000/health` сообщением «есть» после повторного запуска.
-Скриншот не предоставлен. Это подтверждение локального просмотра,
-не выполнение пунктов clone/запуск/health на TEST.
+Это подтверждение локального просмотра, не выполнение пунктов clone/запуск/
+health на TEST; сами пункты по ВМ подтверждены файлами ниже.
 
 ## Итог проверки трёх стендов (2026-10-10)
 
@@ -18,7 +18,9 @@
 | PROD | `studentledger-prod` | 192.168.56.13/24 | 08:00:27:51:a0:03 | Ubuntu 24.04.5 LTS / 6.8.0-146 |
 
 - Гипервизор: Oracle VirtualBox 7.2.20 на Windows 10 Pro 22H2 (ADR-013).
-- Ресурсы каждой ВМ: 2 vCPU, 3 ГБ RAM, диск 25 ГБ, видеопамять 64 МБ (ADR-014).
+- Ресурсы каждой ВМ: 2 vCPU, 3072 МБ RAM, видеопамять 64 МБ; размер файла
+  виртуального диска в менеджере VirtualBox — 20 ГБ (фактическое значение,
+  отличается от 25 ГБ в ADR-014).
 - Графический интерфейс: `xubuntu-desktop-minimal` + `lightdm` (ADR-016).
 - Приложение: служба `studentledger.service` (`enabled`, `active`) на всех трёх
   ВМ; на TEST она отвечает на `http://192.168.56.11:8000/health` (пункт
@@ -27,15 +29,36 @@
   commit `816ac3eca4fcf73d2de12a65b907916a97fcaeee`; Python 3.12.3;
   `.venv` + `pip check` → `No broken requirements found`.
 
+## Скриншоты проверки 17.10.2026
+
+Снимки сделаны в графических сессиях гостевых систем (`VBoxManage controlvm
+screenshotpng`) при выполнении команд в терминале. После первой загрузки
+экран входа `studentledger-stage` не восстановился, стенд перезапущен, поэтому
+все три ВМ сняты одинаковым способом. Даты на снимках — 17.10.2026.
+
+| Файл | Что подтверждает |
+|---|---|
+| `00-vms-manager.png` | менеджер VirtualBox: три ВМ в состоянии «Работает», версия 7.2.20 и параметры выбранной машины |
+| `05-test-system.png` | TEST: hostname, Ubuntu 24.04.5 LTS, ядро 6.8.0-146, x86-64, адрес 192.168.56.11/24, Git 2.43.0, Python 3.12.3 |
+| `06-stage-system.png` | STAGE: то же для адреса 192.168.56.12 |
+| `07-prod-system.png` | PROD: то же для адреса 192.168.56.13 |
+| `08-test-ping.png` | 4/4 пакета, 0 % потерь: TEST → STAGE и TEST → PROD |
+| `09-stage-ping.png` | STAGE → TEST и STAGE → PROD |
+| `10-prod-ping.png` | PROD → TEST и PROD → STAGE |
+| `11-test-clone.png` | `git remote -v`, ветка `master`, commit `816ac3e…` на TEST |
+| `12-test-service.png` | `pip check` → `No broken requirements found`; служба `enabled`, `active` |
+| `13-test-health.png` | `curl -i http://192.168.56.11:8000/health` → HTTP/1.1 200 OK, `{"status":"ok"}` |
+
 ## Файлы подтверждений
 
 | Файл | Что подтверждает |
 |---|---|
 | `iso-sha256-host.txt` | SHA256 образа совпадает с официальным SHA256SUMS Ubuntu |
 | `host-view.txt` | вид с хоста: версия VirtualBox, три работающие ВМ, адреса, ping хост→ВМ, HTTP 200 с каждой ВМ, netplan гостей |
-| `test-full.txt`, `stage-full.txt`, `prod-full.txt` | система, инструменты, GUI, память, сеть, служба и `/health`, клон, **шесть ping** (4 пакета, 0% потерь) |
+| `test-full.txt`, `stage-full.txt`, `prod-full.txt` | система, инструменты, GUI, память, сеть, служба и `/health`, клон, **шесть ping** (4 пакета, 0 % потерь) |
 | `01-test-console.png` | консоль TEST |
 | `02-test-gui.png`, `03-stage-gui.png`, `04-prod-gui.png` | экраны входа Xubuntu с hostname соответствующей ВМ |
+| `00-vms-manager.png`, `05-…13-….png` | скриншоты повторной проверки (таблица выше) |
 | `unattended-install-test.log` | автоматическая установка TEST |
 | `install-wait-test.log`, `install-wait-stage-prod.log`, `install-memory-watch.log`, `progress-stage-prod.log` | ход установки и контроль памяти |
 | `provision-test-watch.log`, `provision-stage-prod-watch.log` | ход настройки стендов |
@@ -44,18 +67,23 @@
 
 ## Checklist
 
-- [x] `01-vms` — три включённые ВМ и версия гипервизора: `host-view.txt`
-      (список running VMs, версия 7.2.20) + три PNG-экрана консолей.
-- [x] `02-test-system` — ОС, архитектура, hostname, IP: `test-full.txt`.
-- [x] `03-stage-system` — ОС, архитектура, hostname, IP: `stage-full.txt`.
-- [x] `04-prod-system` — ОС, архитектура, hostname, IP: `prod-full.txt`.
-- [x] `05-07-tools` — Git, Python, venv на всех стендах: в тех же трёх файлах.
-- [x] `08-test-ping` — TEST → STAGE и PROD: `test-full.txt`.
-- [x] `09-stage-ping` — STAGE → TEST и PROD: `stage-full.txt`.
-- [x] `10-prod-ping` — PROD → TEST и STAGE: `prod-full.txt`.
-- [x] `11-test-clone` — реальный git clone, ветка, commit SHA: `test-full.txt`.
-- [x] `12-test-start` — зависимости, `pip check`, служба и запуск: `test-full.txt`.
-- [x] `13-health` — HTTP 200 и JSON: `test-full.txt` и `host-view.txt`.
+- [x] `01-vms` — три включённые ВМ и версия гипервизора:
+      `00-vms-manager.png` и `host-view.txt`.
+- [x] `02-test-system` — ОС, архитектура, hostname, IP:
+      `05-test-system.png` и `test-full.txt`.
+- [x] `03-stage-system` — `06-stage-system.png` и `stage-full.txt`.
+- [x] `04-prod-system` — `07-prod-system.png` и `prod-full.txt`.
+- [x] `05-07-tools` — Git, Python, venv на всех стендах:
+      `05-…07-system.png` и те же три текстовых файла.
+- [x] `08-test-ping` — TEST → STAGE и PROD: `08-test-ping.png`.
+- [x] `09-stage-ping` — STAGE → TEST и PROD: `09-stage-ping.png`.
+- [x] `10-prod-ping` — PROD → TEST и STAGE: `10-prod-ping.png`.
+- [x] `11-test-clone` — реальный git clone, ветка, commit SHA:
+      `11-test-clone.png` и `test-full.txt`.
+- [x] `12-test-start` — зависимости, `pip check`, служба и запуск:
+      `12-test-service.png`.
+- [x] `13-health` — HTTP 200 и JSON: `13-test-health.png`, `test-full.txt`
+      и `host-view.txt`.
 
 Отличие от исходного плана: установка ОС выполнялась автоматически
 (`VBoxManage unattended install`), поэтому кадров ручного установщика нет.
@@ -65,14 +93,14 @@
 ## Данные о стендах
 
 ```text
-Дата выполнения: 2026-10-09 — 2026-10-10
+Дата выполнения: 2026-10-09 — 2026-10-10; повторная проверка 17.10.2026
 Хост (ОС, архитектура, RAM): Windows 10 Pro 22H2, amd64, 8 логических ядер, 16 ГБ
 Гипервизор и версия: Oracle VirtualBox 7.2.20 r175154
 Образ ОС и версия: ubuntu-24.04.5-live-server-amd64.iso (SHA256 сверен)
 Сетевая схема, имя сегмента: NAT + VirtualBox Host-Only, 192.168.56.0/24
-TEST hostname / IP / ресурсы: studentledger-test / 192.168.56.11 / 2 vCPU, 3 ГБ, 25 ГБ
-STAGE hostname / IP / ресурсы: studentledger-stage / 192.168.56.12 / 2 vCPU, 3 ГБ, 25 ГБ
-PROD hostname / IP / ресурсы: studentledger-prod / 192.168.56.13 / 2 vCPU, 3 ГБ, 25 ГБ
+TEST hostname / IP / ресурсы: studentledger-test / 192.168.56.11 / 2 vCPU, 3072 МБ, 20 ГБ
+STAGE hostname / IP / ресурсы: studentledger-stage / 192.168.56.12 / 2 vCPU, 3072 МБ, 20 ГБ
+PROD hostname / IP / ресурсы: studentledger-prod / 192.168.56.13 / 2 vCPU, 3072 МБ, 20 ГБ
 Remote URL (без секретов): https://github.com/PervuhinRoman/SLCA.git
 Branch / commit SHA: master / 816ac3eca4fcf73d2de12a65b907916a97fcaeee
 Environment: Ubuntu 24.04.5 LTS, Python 3.12.3, XFCE + LightDM
@@ -80,16 +108,14 @@ Commands executed: docs/LR2_RUNBOOK.md, scripts/lr02/*
 Result: 6/6 ping успешны; инструменты на 3 ВМ; clone и pip check на 3 ВМ;
         служба studentledger.service активна; /health = HTTP 200 {"status":"ok"}
 Problems: первая автоматическая установка TEST упала из-за нехватки памяти
-        хоста (ADR-019); проброс порта приложения через 127.0.0.1 сбрасывается
-        из-за VPN-адаптера на хосте — используется прямой внутренний адрес
-Screenshots: PNG консолей ВМ (01-04) + текстовые подтверждения команд
+        хоста (ADR-019); после перезапуска STAGE экран входа не восстановился
+        до повторной загрузки ВМ; хранится прямой внутренний адрес приложения
+Screenshots: 00-vms-manager.png, 05-…13-….png, 01-…04-….png
 ```
 
-После получения данных агент фиксирует их здесь и в `HANDOFF.md`, проверяет
-все пункты ЛР2, затем готовит отчёт. Незавершённые пункты не отмечать готовыми.
+## Отчёт
 
-## Что осталось до отчёта
-
-1. Решение человека: достаточно ли машинных подтверждений вместо ручных
-   скриншотов установки, или требуется повторная ручная установка.
-2. Проверка Human DoD по `LABS_PLAN.md` и подготовка DOCX-отчёта ЛР2.
+Отчёт ЛР2 создан: `docs/reports/ЛР2, Первухин Роман, 241-3211.docx`
+и его PDF-представление. Скриншоты проверки 17.10.2026 встроены в отчёт как
+рисунки 1–10. Перед сдачей человеку нужно просмотреть документ и подтвердить
+Human DoD по `LABS_PLAN.md`.
