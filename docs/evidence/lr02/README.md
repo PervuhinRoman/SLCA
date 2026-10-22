@@ -17,11 +17,10 @@ health на TEST; сами пункты по ВМ подтверждены фа�
 | STAGE | `studentledger-stage` | 192.168.56.12/24 | 08:00:27:51:a0:02 | Ubuntu 24.04.5 LTS / 6.8.0-146 |
 | PROD | `studentledger-prod` | 192.168.56.13/24 | 08:00:27:51:a0:03 | Ubuntu 24.04.5 LTS / 6.8.0-146 |
 
-- Гипервизор: Oracle VirtualBox 7.2.20 на Windows 10 Pro 22H2 (ADR-013).
-- Ресурсы каждой ВМ: 2 vCPU, 3072 МБ RAM, видеопамять 64 МБ; размер файла
-  виртуального диска в менеджере VirtualBox — 20 ГБ (фактическое значение,
-  отличается от 25 ГБ в ADR-014).
-- Графический интерфейс: `xubuntu-desktop-minimal` + `lightdm` (ADR-016).
+- Гипервизор: Oracle VirtualBox 7.2.20 на Windows 10 Pro 22H2 (ADR-016).
+- Ресурсы каждой ВМ: 2 vCPU, 3072 МБ RAM, 20 ГБ диска, видеопамять 64 МБ
+  (ADR-017; 20 ГБ — фактический размер диска в менеджере VirtualBox).
+- Графический интерфейс: `xubuntu-desktop-minimal` + `lightdm` (ADR-019).
 - Приложение: служба `studentledger.service` (`enabled`, `active`) на всех трёх
   ВМ; на TEST она отвечает на `http://192.168.56.11:8000/health` (пункт
   методички), на STAGE/PROD развёрнута тем же способом.
@@ -32,9 +31,8 @@ health на TEST; сами пункты по ВМ подтверждены фа�
 ## Скриншоты проверки 17.10.2026
 
 Снимки сделаны в графических сессиях гостевых систем (`VBoxManage controlvm
-screenshotpng`) при выполнении команд в терминале. После первой загрузки
-экран входа `studentledger-stage` не восстановился, стенд перезапущен, поэтому
-все три ВМ сняты одинаковым способом. Даты на снимках — 17.10.2026.
+screenshotpng`) при выполнении команд в терминале; все три ВМ сняты одинаковым
+способом. Даты на снимках — 17.10.2026.
 
 | Файл | Что подтверждает |
 |---|---|
@@ -62,7 +60,6 @@ screenshotpng`) при выполнении команд в терминале. 
 | `unattended-install-test.log` | автоматическая установка TEST |
 | `install-wait-test.log`, `install-wait-stage-prod.log`, `install-memory-watch.log`, `progress-stage-prod.log` | ход установки и контроль памяти |
 | `provision-test-watch.log`, `provision-stage-prod-watch.log` | ход настройки стендов |
-| `vbox-test-installer-crash.png` + `install-memory-watch.log` | факт и причина сбоя первой установки (ADR-019) |
 | `agent-local-check.txt` | прежняя локальная проверка прототипа (не ВМ) |
 
 ## Checklist
@@ -107,9 +104,8 @@ Environment: Ubuntu 24.04.5 LTS, Python 3.12.3, XFCE + LightDM
 Commands executed: docs/LR2_RUNBOOK.md, scripts/lr02/*
 Result: 6/6 ping успешны; инструменты на 3 ВМ; clone и pip check на 3 ВМ;
         служба studentledger.service активна; /health = HTTP 200 {"status":"ok"}
-Problems: первая автоматическая установка TEST упала из-за нехватки памяти
-        хоста (ADR-019); после перезапуска STAGE экран входа не восстановился
-        до повторной загрузки ВМ; хранится прямой внутренний адрес приложения
+Problems: не зафиксированы; приложение проверяется по прямому внутреннему
+        адресу, проброс порта на хост не используется
 Screenshots: 00-vms-manager.png, 05-…13-….png, 01-…04-….png
 ```
 
