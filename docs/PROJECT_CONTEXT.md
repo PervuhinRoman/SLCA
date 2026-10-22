@@ -74,11 +74,11 @@
 
 Правила распространяются также на документацию и конфигурацию.
 Прежний ADR-012 о единственной master заменён. Ветки dev/prod опубликованы
-от 816ac3e; PR #1 с обновлением ЛР1 слит в dev. Текущие правила
-и инфографика публикуются в docs/branch-guide-and-push-rules.
+от 816ac3e; PR #1 с обновлением ЛР1 слит в dev. Правила
+и инфографика опубликованы и слиты в dev через PR #2.
 Основная ветка GitHub — dev; dev/prod защищены обязательным PR, master
 заблокирована. До ЛР5 разрешён merge без чужого approval (ADR-014).
-CI отсутствует; APP-01–03 не выполняются.
+CI отсутствует; APP-01 подготовлен, APP-02/03 не начаты.
 Remote: https://github.com/PervuhinRoman/SLCA.git.
 
 ## 6. Требования
@@ -146,8 +146,11 @@ Remote: https://github.com/PervuhinRoman/SLCA.git.
 
 ## 9. Текущий этап реализации
 
-ЛР2: подготовлен FastAPI-прототип `app/main.py` с публичным техническим
-`GET /health`. Он не использует БД и не реализует FR-01–FR-14.
-Инструкция: `docs/LR2_RUNBOOK.md`; сверка: `docs/SOURCE_REVIEW.md`.
-Для ВМ выбрана Ubuntu Server 24.04 LTS / Python 3.12; реальные ВМ, IP,
-гипервизор и clone на TEST пока не подтверждены.
+APP-01: конфигурация окружения, PostgreSQL/SQLAlchemy, миграция Alembic
+0001 (User, Student, AuditLog, RefreshSession), транзакции и безопасные
+ошибки подготовлены и проверены локально. Инструкция: docs/APP01_DATABASE.md.
+Публичным остаётся только GET /health; UI, JWT и FR-01–FR-14 ещё отсутствуют.
+ЛР2 остаётся IN_PROGRESS; её фиксированный прототип — коммит
+816ac3eca4fcf73d2de12a65b907916a97fcaeee. Отдельная ветка другого исполнителя
+feature/lr2-vms-and-evidence в рамках APP-01 не меняется.
+Реальные ВМ, IP, гипервизор, clone на TEST и отчёт здесь не подтверждены.
