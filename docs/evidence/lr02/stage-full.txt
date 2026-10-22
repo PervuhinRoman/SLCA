@@ -1,5 +1,5 @@
-﻿===== StudentLedger LR2 evidence =====
-collected: 2026-10-09T21:33:34+00:00
+===== StudentLedger LR2 evidence =====
+collected: 2026-10-22T15:57:14+00:00
 hostname: studentledger-stage
 
 ----- OS and architecture -----
@@ -7,7 +7,7 @@ hostname: studentledger-stage
        Icon name: computer-vm
          Chassis: vm 🖴
       Machine ID: b09a1fc44f5445be8395d0308f885a05
-         Boot ID: 576b252c39b541c6918d4288575a1fa3
+         Boot ID: e5eb7acc80c5445e875b6f196b5eac8c
   Virtualization: oracle
 Operating System: Ubuntu 24.04.5 LTS
           Kernel: Linux 6.8.0-146-generic
@@ -24,34 +24,48 @@ Python 3.12.3
 lightdm 1.30.0-0ubuntu14
 xubuntu-desktop-minimal 2.262
 indirect
+1123 /usr/sbin/lightdm
+1134 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
 
 ----- memory in use -----
                total        used        free      shared  buff/cache   available
-Mem:            2972         394         798           1        1976        2577
+Mem:            2972         446        2306           5         375        2525
 
 ----- network interfaces -----
-lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
-enp0s3           UP             08:00:27:67:7e:c1 <BROADCAST,MULTICAST,UP,LOWER_UP>
-slca-internal    UP             08:00:27:51:a0:02 <BROADCAST,MULTICAST,UP,LOWER_UP>
-lo               UNKNOWN        127.0.0.1/8
-enp0s3           UP             10.0.2.15/24 metric 100
-slca-internal    UP             192.168.56.12/24
-default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
-10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100
-10.0.2.2 dev enp0s3 proto dhcp scope link src 10.0.2.15 metric 100
-172.19.0.2 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
-192.168.11.1 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
-192.168.56.0/24 dev slca-internal proto kernel scope link src 192.168.56.12
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp0s3           UP             08:00:27:67:7e:c1 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+slca-internal    UP             08:00:27:51:a0:02 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        127.0.0.1/8 
+enp0s3           UP             10.0.2.15/24 metric 100 
+slca-internal    UP             192.168.56.12/24 
+default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100 
+10.0.2.2 dev enp0s3 proto dhcp scope link src 10.0.2.15 metric 100 
+10.6.7.2 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+192.168.11.1 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+192.168.56.0/24 dev slca-internal proto kernel scope link src 192.168.56.12 
 
 ----- static address of the internal segment -----
-netplan file not found
+# StudentLedger LR2 — статический адрес внутреннего сегмента, ВМ STAGE.
+# Файл предназначен для /etc/netplan/60-studentledger.yaml на studentledger-stage.
+network:
+  version: 2
+  ethernets:
+    slca-internal:
+      match:
+        macaddress: "08:00:27:51:a0:02"
+      set-name: slca-internal
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.56.12/24
 
 ----- application on 192.168.56.12 -----
 enabled
 active
-17510 /home/student/StudentLedger/.venv/bin/python -m uvicorn app.main:app --host 192.168.56.12 --port 8000
+1114 /home/student/StudentLedger/.venv/bin/python -m uvicorn app.main:app --host 192.168.56.12 --port 8000
 HTTP/1.1 200 OK
-date: Fri, 09 Oct 2026 21:33:40 GMT
+date: Thu, 22 Oct 2026 15:57:19 GMT
 server: uvicorn
 content-length: 15
 content-type: application/json
@@ -69,11 +83,11 @@ No broken requirements found.
 ----- ping all-to-all (LR2 item 4) -----
 --- 192.168.56.12 -> 192.168.56.11
 --- 192.168.56.11 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3108ms
-rtt min/avg/max/mdev = 0.216/0.235/0.250/0.013 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3101ms
+rtt min/avg/max/mdev = 0.253/0.269/0.307/0.022 ms
 --- 192.168.56.12 -> 192.168.56.13
 --- 192.168.56.13 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3068ms
-rtt min/avg/max/mdev = 0.212/0.278/0.377/0.063 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3069ms
+rtt min/avg/max/mdev = 0.236/0.298/0.369/0.048 ms
 
 ===== end of evidence =====
