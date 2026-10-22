@@ -13,5 +13,6 @@ htmlcov/
 *.pem
 *.key
 tmp/
+.tmp-lr02/
 db/backups/*
 !db/backups/.gitkeep

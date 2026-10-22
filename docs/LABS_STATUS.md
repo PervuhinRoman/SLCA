@@ -3,7 +3,7 @@
 | ЛР | Тема | Статус | Основной результат |
 |---|---|---|---|
 | LR1 | Техническое задание | DONE | Актуальное ТЗ |
-| LR2 | Виртуализация | IN_PROGRESS | Прототип и инструкция подготовлены; реальные ВМ, сеть, clone на TEST и отчёт ожидаются |
+| LR2 | Виртуализация | DONE | Три ВМ (TEST/STAGE/PROD) на VirtualBox 7.2.20: Ubuntu 24.04.5, XFCE+LightDM, 192.168.56.11–13, шесть ping без потерь, clone и служба приложения с HTTP 200; отчёт `docs/reports/ЛР2, Первухин Роман, 241-3211.docx` создан и проверен 17.10.2026 |
 | LR3 | Контейнеризация | TODO | Dockerfile, Compose, PostgreSQL volume |
 | LR4 | Непрерывная интеграция | TODO | TeamCity CI + Docker Hub |
 | LR5 | Непрерывная доставка | TODO | Feature/dev workflow + deploy STAGE |
