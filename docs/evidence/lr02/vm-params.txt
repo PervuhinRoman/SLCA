@@ -1,0 +1,45 @@
+===== StudentLedger LR2 - параметры виртуальных машин =====
+collected: 2026-10-22T18:41:12+03:00
+host: Windows 10 Pro 22H2 (amd64, 8 логических ядер, 16 ГБ RAM)
+hypervisor: Oracle VirtualBox 7.2.20r175154
+source: VBoxManage showvminfo <vm> --machinereadable; VBoxManage list hdds
+state at collection: менеджер VirtualBox запущен, все три гостя poweroff
+note: параметры конфигурации читаются без запуска гостя и от состояния не зависят
+
+----- studentledger-test -----
+name=studentledger-test
+ostype="Ubuntu 24.04 LTS (Noble Numbat) (64-bit)"
+memory=3072 MB
+vram=64 MB
+VMState=poweroff
+nic1=nat macaddress1=08002734637F
+nic2=hostonly hostonlyadapter2="VirtualBox Host-Only Ethernet Adapter" macaddress2=08002751A001
+disk=studentledger-test.vdi format=VDI capacity=20480 MB
+
+----- studentledger-stage -----
+name=studentledger-stage
+ostype="Ubuntu 24.04 LTS (Noble Numbat) (64-bit)"
+memory=3072 MB
+vram=64 MB
+VMState=poweroff
+nic1=nat macaddress1=080027677EC1
+nic2=hostonly hostonlyadapter2="VirtualBox Host-Only Ethernet Adapter" macaddress2=08002751A002
+disk=studentledger-stage.vdi format=VDI capacity=20480 MB
+
+----- studentledger-prod -----
+name=studentledger-prod
+ostype="Ubuntu 24.04 LTS (Noble Numbat) (64-bit)"
+memory=3072 MB
+vram=64 MB
+VMState=poweroff
+nic1=nat macaddress1=0800276E7DCF
+nic2=hostonly hostonlyadapter2="VirtualBox Host-Only Ethernet Adapter" macaddress2=08002751A003
+disk=studentledger-prod.vdi format=VDI capacity=20480 MB
+
+----- контроль -----
+Все три диска стендов — VDI ёмкостью 20480 МБ (20 ГиБ), режим 2 vCPU / 3072 МБ RAM.
+Диск ёмкостью 25600 МБ (25 ГиБ) принадлежит посторонней ВМ `kali` и к стендам
+ЛР2 не относится: это объясняет прежнее расхождение 20/25 ГБ в ADR-016/017,
+которое исправлено на фактическое значение 20 ГБ.
+
+===== end of vm parameters =====

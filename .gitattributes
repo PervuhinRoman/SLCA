@@ -2,3 +2,10 @@
 *.docx binary
 # Markdown uses two trailing spaces for explicit line breaks.
 *.md whitespace=-blank-at-eol
+# Shell scripts and container files must keep LF inside Linux images.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+# Captured command output keeps its original spacing.
+docs/evidence/** whitespace=-trailing-space,-blank-at-eof

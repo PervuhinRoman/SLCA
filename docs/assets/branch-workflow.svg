@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1000" viewBox="0 0 1440 1000" role="img" aria-labelledby="title desc">
+<title id="title">StudentLedger — как работают ветки</title><desc id="desc">Временная ветка создаётся от dev и возвращается в dev через PR. Отдельный выпуск dev в prod. Master заблокирована. Сейчас CI отсутствует, самостоятельный merge разрешён до ЛР5.</desc>
+<defs><marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10" fill="none" stroke="#2563eb" stroke-width="2"/></marker><marker id="purple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10" fill="none" stroke="#7c3aed" stroke-width="2"/></marker><marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10" fill="none" stroke="#059669" stroke-width="2"/></marker></defs>
+<rect width="1440" height="1000" rx="24" fill="#f8fafc"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#14243b} .muted{fill:#52647a} .mono{font-family:Menlo,Consolas,monospace}</style>
+<text x="56" y="61" font-size="17" style="fill:#52647a" font-weight="700" class="">STUDENTLEDGER  /  РАБОТА С GIT</text>
+<text x="56" y="112" font-size="38" font-weight="700" class="">Одна задача → одна ветка → один PR</text>
+<text x="56" y="152" font-size="22" class="muted">Код, инструкции и конфигурация проходят один и тот же путь.</text>
+<rect x="1030" y="193" width="354" height="76" rx="18" fill="#e8edf3"/>
+<text x="1052" y="224" font-size="21" font-weight="700" class="">master · заблокирована</text>
+<text x="1052" y="250" font-size="17" class="muted">Историческая база, не для работы</text>
+<text x="56" y="276" font-size="30" style="fill:#2563eb" font-weight="700" class="mono">dev</text>
+<text x="56" y="307" font-size="19" class="muted">Основная ветка</text>
+<path d="M260 300 H1350" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" marker-end="url(#blue)"/>
+<circle cx="280" cy="300" r="9" fill="white" stroke="#2563eb" stroke-width="4"/>
+<circle cx="390" cy="300" r="9" fill="white" stroke="#2563eb" stroke-width="4"/>
+<circle cx="960" cy="300" r="9" fill="white" stroke="#2563eb" stroke-width="4"/>
+<circle cx="1080" cy="300" r="9" fill="white" stroke="#2563eb" stroke-width="4"/>
+<text x="490" y="272" font-size="20" style="fill:#2563eb" class="">Новые задачи начинаются от актуальной dev</text>
+<path d="M390 310 C390 400 460 440 525 440 H740 C855 440 860 340 950 306" fill="none" stroke="#7c3aed" stroke-width="4" stroke-linecap="round" marker-end="url(#purple)"/>
+<circle cx="540" cy="440" r="9" fill="white" stroke="#7c3aed" stroke-width="4"/>
+<circle cx="635" cy="440" r="9" fill="white" stroke="#7c3aed" stroke-width="4"/>
+<circle cx="730" cy="440" r="9" fill="white" stroke="#7c3aed" stroke-width="4"/>
+<text x="90" y="395" font-size="20" style="fill:#7c3aed" font-weight="700" class="">1. Создать ветку</text>
+<rect x="493" y="472" width="330" height="84" rx="18" fill="#ede9fe"/>
+<text x="515" y="504" font-size="21" style="fill:#6d28d9" font-weight="700" class="mono">feature/*  fix/*</text>
+<text x="515" y="536" font-size="21" style="fill:#6d28d9" font-weight="700" class="mono">docs/*     chore/*</text>
+<text x="515" y="592" font-size="20" class="muted">2. Изменения и локальные проверки</text>
+<text x="885" y="435" font-size="20" style="fill:#7c3aed" font-weight="700" class="">3. PR → merge в dev</text>
+<text x="56" y="651" font-size="30" style="fill:#059669" font-weight="700" class="mono">prod</text>
+<text x="56" y="682" font-size="19" class="muted">Ветка выпусков</text>
+<path d="M260 675 H1350" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" marker-end="url(#green)"/>
+<circle cx="280" cy="675" r="9" fill="white" stroke="#059669" stroke-width="4"/>
+<path d="M1080 311 C1080 450 1200 492 1200 663" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" marker-end="url(#green)" stroke-dasharray="10 9"/>
+<circle cx="1200" cy="675" r="9" fill="white" stroke="#059669" stroke-width="4"/>
+<text x="900" y="530" font-size="20" style="fill:#047857" font-weight="700" class="">4. PR dev → prod</text>
+<text x="900" y="560" font-size="18" class="muted">Отдельный выпуск</text>
+<text x="900" y="588" font-size="18" class="muted">после проверки</text>
+<text x="455" y="711" font-size="19" class="muted">Выпуск — по готовности; не после каждой правки документации.</text>
+<rect x="56" y="752" width="646" height="173" rx="18" fill="#eff6ff" stroke="#bfdbfe"/>
+<text x="80" y="788" font-size="18" style="fill:#1d4ed8" font-weight="700" class="">СЕЙЧАС</text>
+<text x="80" y="823" font-size="21" class="">PR обязателен; до ЛР5 можно слить свой PR.</text>
+<text x="80" y="857" font-size="21" class="">CI и автоматического развёртывания ещё нет.</text>
+<text x="80" y="891" font-size="19" class="">dev / prod: без прямого push, force push и удаления.</text>
+<rect x="726" y="752" width="658" height="173" rx="18" fill="#f0fdf4" stroke="#bbf7d0"/>
+<text x="750" y="788" font-size="18" style="fill:#047857" font-weight="700" class="">ПО МЕРЕ ВЫПОЛНЕНИЯ ЛАБОРАТОРНЫХ</text>
+<text x="750" y="823" font-size="21" class="">TeamCity на TEST → обязательные проверки.</text>
+<text x="750" y="857" font-size="21" class="">dev → STAGE; prod → PROD после настройки CD.</text>
+<text x="750" y="891" font-size="21" class="">Для ЛР5 — обязательное одобрение товарища.</text>
+<text x="56" y="969" font-size="17" class="muted">Схема процесса, не история коммитов • TEST / STAGE / PROD — окружения, а не дополнительные ветки</text>
+</svg>
