@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Студенты — StudentLedger{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Студенты</h1>
+    <p class="muted">
+      {% if current_user.role == "student" %}Ваша запись в системе.
+      {% else %}Список сведений о студентах.{% endif %}
+    </p>
+  </div>
+  {% if current_user.role == "administrator" %}
+  <a class="button primary" href="/students/new">Добавить студента</a>
+  {% endif %}
+</div>
+
+{% if created %}
+<div class="alert success" role="status">Студент добавлен и сохранён в базе данных.</div>
+{% endif %}
+
+{% if students %}
+<table class="table">
+  <thead>
+    <tr><th>ФИО</th><th>Год поступления</th><th>Форма обучения</th><th>Группа</th></tr>
+  </thead>
+  <tbody>
+  {% for s in students %}
+    <tr>
+      <td>{{ s.last_name }} {{ s.first_name }}{% if s.patronymic %} {{ s.patronymic }}{% endif %}</td>
+      <td>{{ s.admission_year }}</td>
+      <td>{{ s.education_form }}</td>
+      <td>{{ s.group_name }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">Записей пока нет.</p>
+{% endif %}
+{% endblock %}

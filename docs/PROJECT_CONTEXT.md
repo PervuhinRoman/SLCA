@@ -146,11 +146,15 @@ Remote: https://github.com/PervuhinRoman/SLCA.git.
 
 ## 9. Текущий этап реализации
 
-APP-01: конфигурация окружения, PostgreSQL/SQLAlchemy, миграция Alembic
-0001 (User, Student, AuditLog, RefreshSession), транзакции и безопасные
-ошибки подготовлены и проверены локально. Инструкция: docs/APP01_DATABASE.md.
-Публичным остаётся только GET /health; UI, JWT и FR-01–FR-14 ещё отсутствуют.
-ЛР2 остаётся IN_PROGRESS; её фиксированный прототип — коммит
-816ac3eca4fcf73d2de12a65b907916a97fcaeee. Отдельная ветка другого исполнителя
-feature/lr2-vms-and-evidence в рамках APP-01 не меняется.
-Реальные ВМ, IP, гипервизор, clone на TEST и отчёт здесь не подтверждены.
+ЛР3: реализованы вход по логину и паролю (JWT access/refresh в HttpOnly-cookie),
+выход с отзывом refresh, роли, список студентов и добавление студента с
+аудитом (APP-02/03). Добавлены `Dockerfile` и `docker-compose.yml`
+(приложение + PostgreSQL 16 + постоянный том `studentledger_pgdata`).
+Три ВМ пересозданы на текущем хосте (Ubuntu 24.04.5, VirtualBox 7.1.10),
+Docker установлен на TEST/STAGE/PROD; на TEST развёрнут стек и проверена
+сохранность данных. Публичный `/health` сохранён.
+
+FR-03–FR-10, FR-14 и полная матрица FR-13 остаются следующими этапами.
+ЛР2 завершена; её отчёт — `docs/reports/ЛР2, Первухин Роман, 241-3211.docx`.
+Ветка ЛР3: `feature/lr3-docker-and-app`, commit `d026728`.
+Отчёт ЛР3 готовится; evidence — `docs/evidence/lr03/`.

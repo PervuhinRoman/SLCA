@@ -1,0 +1,22 @@
+ Static hostname: studentledger-test
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: ac286794f13f40a28b8d25b50179e907
+         Boot ID: e815f66043214157bf6eb1c88d661e5a
+  Virtualization: oracle
+Operating System: Ubuntu 24.04.5 LTS
+          Kernel: Linux 6.8.0-151-generic
+    Architecture: x86-64
+ Hardware Vendor: innotek GmbH
+  Hardware Model: VirtualBox
+Firmware Version: VirtualBox
+   Firmware Date: Fri 2006-12-01
+    Firmware Age: 19y 11month 3w 4d
+lo               UNKNOWN        127.0.0.1/8 
+enp0s3           UP             10.0.2.15/24 metric 100 
+slca-internal    UP             192.168.56.11/24 
+docker0          DOWN           172.17.0.1/16 
+br-61b3d6710a42  UP             172.18.0.1/16 
+Docker version 29.10.1, build c48360f
+Docker Compose version v5.8.0
+6.8.0-151-generic

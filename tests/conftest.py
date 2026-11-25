@@ -3,10 +3,12 @@ import os
 import pytest
 from alembic import command
 from alembic.config import Config
+from fastapi.testclient import TestClient
 from sqlalchemy.engine import make_url
 
 from app.config import get_settings
 from app.db.session import build_engine, get_engine
+from app.main import app
 
 
 @pytest.fixture(autouse=True)
@@ -37,3 +39,13 @@ def database(monkeypatch):
         connection.execute(text("TRUNCATE refresh_sessions, audit_logs, students, users"))
     yield engine
     engine.dispose()
+
+
+@pytest.fixture
+def client(database, monkeypatch):
+    monkeypatch.setenv("JWT_SECRET", "test-jwt-secret-" + "x" * 32)
+    monkeypatch.setenv("COOKIE_SECURE", "false")
+    get_settings.cache_clear()
+    with TestClient(app) as test_client:
+        yield test_client
+    get_settings.cache_clear()
