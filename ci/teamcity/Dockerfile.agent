@@ -1,0 +1,12 @@
+# TeamCity agent with Docker CLI for StudentLedger builds.
+# The official agent image has no Docker client; the socket is mounted at run time.
+FROM jetbrains/teamcity-agent:latest
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        docker.io openssh-client curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Keep the agent's default user where the base image defines it.
+USER buildagent
