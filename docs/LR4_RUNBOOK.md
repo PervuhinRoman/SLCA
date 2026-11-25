@@ -32,17 +32,21 @@ docker run -d --name teamcity-server --restart unless-stopped \
 ## 3. Постоянный токен для REST
 
 Basic-auth POST в TeamCity защищён от CSRF, поэтому для настройки нужен
-Bearer-токен суперпользователя:
+постоянный access token администратора. Он создаётся в веб-интерфейсе:
+профиль администратора → Access Tokens → Create access token. Токен
+показывается один раз; в Git он не попадает и передаётся скрипту через
+переменную `TEAMCITY_TOKEN` как `Authorization: Bearer`.
+
+Проверка токена:
 
 ```bash
-TOKEN=$(openssl rand -hex 24)
-printf '%s' "$TOKEN" > /tmp/superuser.token
-docker cp /tmp/superuser.token teamcity-server:/data/teamcity_server/datadir/config/superUser.token
-docker restart teamcity-server
+curl -H "Authorization: Bearer $TOKEN" \
+  http://192.168.56.11:8111/app/rest/server
 ```
 
-Токен хранится только на стенде и передаётся скрипту через переменную
-`TEAMCITY_TOKEN`; в Git он не попадает.
+Альтернатива для отладки: TeamCity печатает в журнал суперпользовательский
+токен (`docker logs teamcity-server | grep 'Super user authentication token'`),
+но он меняется при перезапуске и для автоматизации менее удобен.
 
 ## 4. Создание проекта и конфигурации
 
@@ -71,24 +75,25 @@ python3 ci/teamcity/bootstrap.py
 
 ## 5. Агент сборки
 
-Образ агента: `ci/teamcity/Dockerfile.agent` — официальный
-`jetbrains/teamcity-agent` с Docker CLI и SSH-клиентом.
+Официальный образ `jetbrains/teamcity-agent` уже содержит Docker CLI и Git;
+проверено командой `docker run --rm --entrypoint sh jetbrains/teamcity-agent
+-c 'command -v docker'`. Поэтому достаточно запустить его с доступом к
+сокету Docker хоста:
 
 ```bash
-git clone --branch feature/lr4-teamcity-ci https://github.com/PervuhinRoman/SLCA.git
-cd SLCA
-docker build -f ci/teamcity/Dockerfile.agent -t studentledger-teamcity-agent .
-
 docker run -d --name teamcity-agent --restart unless-stopped \
+  --user root \
   -e SERVER_URL=http://192.168.56.11:8111 \
   -e AGENT_NAME=test-agent \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v teamcity_agent_conf:/data/teamcity_agent/conf \
-  studentledger-teamcity-agent
+  jetbrains/teamcity-agent:latest
 ```
 
-В TeamCity: Agents → `test-agent` → Authorize. Требование к агенту —
-наличие Docker CLI; проверяется шагом сборки.
+В TeamCity: Agents → `test-agent` → Authorize. Агент запускается от root,
+потому что смонтированный сокет Docker доступен только root; для production
+нужен отдельный изолированный агент. Файл `ci/teamcity/Dockerfile.agent`
+оставлен как вариант образа с SSH-клиентом для ЛР5.
 
 ## 6. Проверка ЛР4
 

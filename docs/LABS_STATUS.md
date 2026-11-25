@@ -5,7 +5,7 @@
 | LR1 | Техническое задание | DONE | Актуальное ТЗ |
 | LR2 | Виртуализация | DONE | Три ВМ (TEST/STAGE/PROD) на VirtualBox 7.2.20: Ubuntu 24.04.5, XFCE+LightDM, 192.168.56.11–13, шесть ping без потерь, clone и служба приложения с HTTP 200; отчёт `docs/reports/ЛР2, Первухин Роман, 241-3211.docx` создан и проверен 17.10.2026 |
 | LR3 | Контейнеризация | DONE | Dockerfile и Compose (app + PostgreSQL 16 + том), вход/студенты, три ВМ с Docker; сохранность проверена после `down/up` и перезагрузки ВМ; отчёт `docs/reports/ЛР3, Гурьев Сергей, 241-3211.docx` создан и проверен 26.11.2026 |
-| LR4 | Непрерывная интеграция | TODO | TeamCity CI + Docker Hub |
+| LR4 | Непрерывная интеграция | IN_PROGRESS | TeamCity 2026.2.2 на TEST, агент `test-agent`, сборка feature и dev; образ `dev` опубликован в Docker Hub; осталось: сборка/тег `prod`, отчёт |
 | LR5 | Непрерывная доставка | TODO | Feature/dev workflow + deploy STAGE |
 | LR6 | Статический анализ | TODO | Quality/security/secret gates |
 | LR7 | Автоматизированное тестирование | TODO | Unit/integration tests, >=40% функционала |
@@ -57,3 +57,15 @@ Docker 29.10.1 и Compose v5.8.0 установлены на TEST/STAGE/PROD. Н
 создан (нет `gh`/токена), ссылка для создания — в HANDOFF.
 Отчёт `docs/reports/ЛР3, Гурьев Сергей, 241-3211.docx` и PDF созданы,
 14 страниц, 9 рисунков, 3 таблицы; проверены рендером. Статус ЛР3 — DONE.
+
+## ЛР4 — 2026-11-26
+
+TeamCity Server 2026.2.2 развёрнут в Docker на TEST (`:8111`), создан
+проект `StudentLedger`, VCS-корень GitHub, конфигурация
+`Build and push image` с VCS-триггером на все ветки. Агент `test-agent`
+запущен в контейнере `jetbrains/teamcity-agent` с сокетом Docker.
+Сборка feature-ветки прошла без публикации, сборка `dev` — успешно,
+образ `ahdyshba/studentledger` с тегами `2` и `dev` опубликован в Docker Hub.
+Настройка автоматизирована скриптом `ci/teamcity/bootstrap.py`.
+Осталось: выпуск dev → prod и сборка `prod`, отчёт ЛР4.
+Evidence: `docs/evidence/lr04/`.

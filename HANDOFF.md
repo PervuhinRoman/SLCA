@@ -873,3 +873,39 @@ ADR-016/017; параметры ВМ (2 vCPU/3 ГБ/20 ГБ) сохранены.
 **Готовность.** Agent work, Human work и Report по ЛР3 выполнены; статус
 ЛР3 — DONE. Следующая задача — ЛР4 (CI/TeamCity/Docker Hub) по команде
 исполнителя.
+
+## ЛР4 — TeamCity CI и Docker Hub, 2026-11-26
+
+**Задача и границы.** Настроить непрерывную интеграцию: TeamCity Server на
+TEST, сборка Docker-образа для всех веток, публикация в Docker Hub для
+`dev` и `prod`. ЛР5 и отчёт ЛР4 не начинались.
+
+**Сделано.** TeamCity Server 2026.2.2 (build 239308) запущен в Docker на
+TEST (`192.168.56.11:8111`, тома `teamcity_data`/`teamcity_logs`, внутренняя
+HSQLDB). Создан администратор, получен постоянный access token (Bearer).
+Скрипт `ci/teamcity/bootstrap.py` создаёт проект `StudentLedger`, VCS-корень
+`SLCA_GitHub` (публичный GitHub, `+:refs/heads/*`, ветка по умолчанию dev),
+конфигурацию `Build and push image`, параметры `DOCKERHUB_USER`,
+`DOCKERHUB_TOKEN` (password) и VCS-триггер на все ветки.
+
+Агент `test-agent` запущен из официального образа
+`jetbrains/teamcity-agent` с сокетом Docker, авторизован через REST.
+Официальный образ уже содержит Docker CLI и Git.
+
+**Проверки.** Сборка #1 (`feature/lr4-teamcity-ci`): образ
+`ahdyshba/studentledger:1` собран, шаг push пропущен с сообщением для
+feature-ветки. Сборка #2 (`dev`): успешно выполнены `docker login`,
+push тегов `2` и `dev`, `docker logout`. Docker Hub API подтверждает теги
+`dev` и `2`. Логи и скриншоты: `docs/evidence/lr04/`.
+
+**Публикация.** Ветка `feature/lr4-teamcity-ci`, commit `c266d98`
+(актуальный HEAD уточняется после документационного коммита). PR в dev
+создаётся отдельно; merge не выполнялся. Пользователь самостоятельно создал
+и слил PR #5 для ЛР3, поэтому `dev` уже содержит ЛР3.
+
+**Осталось.** Выпуск dev → prod (PR) и сборка/тег `prod`; отчёт ЛР4.
+Токен Docker Hub хранится только в TeamCity и не в Git; при утечке отозвать.
+
+**Ограничения.** Внутренняя HSQLDB TeamCity — учебный режим; агент запущен
+от root из-за сокета Docker; на TEST одновременно работают TeamCity Server,
+агент и сборка при 3 ГБ RAM, поэтому сборки медленные (2 минуты).
