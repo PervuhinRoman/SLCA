@@ -844,8 +844,12 @@ MAC и hostname изменены, machine-id и SSH-ключи перегене�
 TEST со STAGE/PROD удалены. Пользователь `student`, учебный пароль
 `StudentLedger2026!`; на VM включён passwordless sudo для автоматизации.
 
-**Публикация.** Ветка `feature/lr3-docker-and-app`, commit `d026728`,
-отправлена в origin с upstream. PR в `dev` ещё не создан. Merge не выполнялся.
+**Публикация.** Ветка `feature/lr3-docker-and-app` отправлена в origin
+(upstream настроен), итоговый commit `0c373c3`. PR в `dev` агентом не создан:
+`gh` на хосте не установлен, отдельного токена нет. Человеку нужно открыть
+https://github.com/PervuhinRoman/SLCA/compare/dev...feature/lr3-docker-and-app?expand=1
+и создать PR (заголовок «feat(lr3): контейнеризация StudentLedger»). Merge не
+выполнялся.
 
 **Ограничения.** VirtualBox на новом хосте 7.1.10, а не 7.2.20, как в
 ADR-016/017; параметры ВМ (2 vCPU/3 ГБ/20 ГБ) сохранены. При трёх
