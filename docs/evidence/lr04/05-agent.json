@@ -1,0 +1,1 @@
+{"count":1,"href":"/app/rest/agents?locator=name:test-agent","agent":[{"id":1,"name":"test-agent","typeId":1,"href":"/app/rest/agents/id:1","webUrl":"http://localhost:8111/agentDetails.html?id=1&agentTypeId=1&realAgentName=test-agent"}]}

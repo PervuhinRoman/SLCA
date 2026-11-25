@@ -873,3 +873,49 @@ ADR-016/017; параметры ВМ (2 vCPU/3 ГБ/20 ГБ) сохранены.
 **Готовность.** Agent work, Human work и Report по ЛР3 выполнены; статус
 ЛР3 — DONE. Следующая задача — ЛР4 (CI/TeamCity/Docker Hub) по команде
 исполнителя.
+
+## ЛР4 — TeamCity CI и Docker Hub, 2026-11-26
+
+**Задача и границы.** Настроить непрерывную интеграцию: TeamCity Server на
+TEST, сборка Docker-образа для всех веток, публикация в Docker Hub для
+`dev` и `prod`. ЛР5 и отчёт ЛР4 не начинались.
+
+**Сделано.** TeamCity Server 2026.2.2 (build 239308) запущен в Docker на
+TEST (`192.168.56.11:8111`, тома `teamcity_data`/`teamcity_logs`, внутренняя
+HSQLDB). Создан администратор, получен постоянный access token (Bearer).
+Скрипт `ci/teamcity/bootstrap.py` создаёт проект `StudentLedger`, VCS-корень
+`SLCA_GitHub` (публичный GitHub, `+:refs/heads/*`, ветка по умолчанию dev),
+конфигурацию `Build and push image`, параметры `DOCKERHUB_USER`,
+`DOCKERHUB_TOKEN` (password) и VCS-триггер на все ветки.
+
+Агент `test-agent` запущен из официального образа
+`jetbrains/teamcity-agent` с сокетом Docker, авторизован через REST.
+Официальный образ уже содержит Docker CLI и Git.
+
+**Проверки.** Сборка #1 (`feature/lr4-teamcity-ci`): образ
+`ahdyshba/studentledger:1` собран, шаг push пропущен с сообщением для
+feature-ветки. Сборка #2 (`dev`): успешно выполнены `docker login`,
+push тегов `2` и `dev`, `docker logout`. Docker Hub API подтверждает теги
+`dev` и `2`. Логи и скриншоты: `docs/evidence/lr04/`.
+
+**Публикация.** Ветка `feature/lr4-teamcity-ci` отправлена в origin. PR #6
+(https://github.com/PervuhinRoman/SLCA/pull/6, → `dev`) остаётся открытым.
+Выпускной PR #7 (https://github.com/PervuhinRoman/SLCA/pull/7, `dev` → `prod`)
+слит 26.11.2026 с разрешения пользователя; после этого сборка `prod` #3
+прошла успешно, в Docker Hub опубликованы теги `3` и `prod`. Merge PR #6
+агентом не выполнялся.
+
+**Осталось.** Слить PR #6 (код CI в dev). Отчёт ЛР4 создан:
+`docs/reports/ЛР4, Гурьев Сергей, 241-3211.docx` и одноимённый PDF,
+10 страниц, 5 рисунков, 2 таблицы; титульный лист, оглавление с номерами
+страниц, A4, поля 30/15/20/20 мм, Times New Roman 14. Проверен рендером.
+Статус ЛР4 — DONE. Токен Docker Hub хранится только в TeamCity и не в Git;
+при утечке отозвать.
+
+**Следующая задача — ЛР5.** Требуется review другого участника (п. 5
+методички); без него ЛР5 не считается выполненной. Заготовки ветки
+`feature/lr5-cd-stage` (APP-04) и deploy-скриптов уже начаты.
+
+**Ограничения.** Внутренняя HSQLDB TeamCity — учебный режим; агент запущен
+от root из-за сокета Docker; на TEST одновременно работают TeamCity Server,
+агент и сборка при 3 ГБ RAM, поэтому сборки медленные (2 минуты).
