@@ -805,3 +805,67 @@ PR #4: https://github.com/PervuhinRoman/SLCA/pull/4 → `dev`.
 
 **Проверка перед сдачей.** Преподавателю передаются только DOCX-отчёты;
 `docs/reports/ЛР2, Первухин Роман, 241-3211.docx` и PDF готовы и не менялись.
+
+## ЛР3 — контейнеризация: приложение, Docker и три ВМ, 2026-11-26
+
+**Задача и границы.** По прямому указанию исполнителя выполняется ЛР3
+(«хотя бы 3, желательно 3–5»). В этот этап входят APP-02/03, Dockerfile,
+Compose, три ВМ, демонстрация и evidence. ЛР4/ЛР5 не начинались. Отчёт ЛР3
+создан и проверен.
+
+**Приложение.** Реализованы вход по логину и паролю, JWT access (15 мин) и
+refresh (7 дней) в HttpOnly-cookie, выход с отзывом refresh, ротация refresh,
+роли administrator/teacher/student, список студентов (студент видит только
+себя), добавление студента с созданием учётной записи, валидация, аудит
+`student.create`. Добавлены русские шаблоны и CSS, `/health` не изменён.
+
+**Файлы.** Новые: `app/security.py`, `app/auth.py`, `app/students.py`,
+`app/cli.py`, `app/templating.py`, `app/templates/*`, `app/static/style.css`,
+`Dockerfile`, `docker-compose.yml`, `docker/entrypoint.sh`, `.dockerignore`,
+`scripts/lr03/install-docker.sh`, `scripts/lr03/create-vm.ps1`,
+`docs/LR3_RUNBOOK.md`, `docs/evidence/lr03/*`, `tests/test_students.py`.
+Обновлены: `app/config.py`, `app/main.py`, `requirements*.txt`,
+`tests/conftest.py`, `tests/test_foundation.py`, `README.md`, `.env.example`,
+`.gitignore`, `.gitattributes`, `docs/LABS_STATUS.md`,
+`docs/REQUIREMENTS_MAP.md`, `docs/PROJECT_CONTEXT.md`, этот файл.
+
+**Проверки.** 44 pytest-теста пройдены на локальном PostgreSQL 17;
+`pip check` без ошибок. На TEST: `docker compose up -d --build`, оба
+контейнера healthy, вход администратора, добавление Петрова и Сидорова,
+проверка роли студента и 403 на добавление, аудит. `docker compose down`
+(том сохранён) → `up -d` → те же две записи; затем перезагрузка ВМ → те же
+две записи и HTTP 200 `/health`. Docker 29.10.1 и Compose v5.8.0.
+
+**Стенды.** На этом хосте ВМ ЛР2 отсутствовали (VirtualBox 7.1.10, только
+чужая ВМ `Ц1`). Пересозданы: Ubuntu 24.04.5, 2 vCPU, 3 ГБ RAM, 20 ГБ,
+host-only 192.168.56.0/24. TEST `192.168.56.11` (SSH 2221), STAGE `.12`
+(2222), PROD `.13` (2223). После установки TEST клонированы в STAGE/PROD,
+MAC и hostname изменены, machine-id и SSH-ключи перегенерированы; данные
+TEST со STAGE/PROD удалены. Пользователь `student`, учебный пароль
+`StudentLedger2026!`; на VM включён passwordless sudo для автоматизации.
+
+**Публикация.** Ветка `feature/lr3-docker-and-app`, commit `d026728`,
+отправлена в origin с upstream. PR в `dev` ещё не создан. Merge не выполнялся.
+
+**Ограничения.** VirtualBox на новом хосте 7.1.10, а не 7.2.20, как в
+ADR-016/017; параметры ВМ (2 vCPU/3 ГБ/20 ГБ) сохранены. При трёх
+одновременных ВМ TEST загружается несколько минут (нехватка ресурсов хоста).
+Песочница DSH запрещала Python создавать временные каталоги в проекте,
+поэтому pip, pytest и Playwright запускались с разовым полным доступом;
+на результат ЛР это не влияет. Учётные данные стенда — учебные, в Git не
+попали; `.env` только на ВМ.
+
+**Human work / следующий шаг.** Просмотреть отчёт ЛР3 и при необходимости
+внести правки; проверить PR и при необходимости слить его. Отчёт:
+`docs/reports/ЛР3, Гурьев Сергей, 241-3211.docx` и одноимённый PDF, 14 страниц,
+9 рисунков, 3 таблицы; титульный лист, оглавление с номерами страниц, A4,
+поля 30/15/20/20 мм, Times New Roman 14, подписи рисунков и таблиц.
+Проверен рендером всех страниц. Для ЛР4 нужен аккаунт Docker Hub (токен) и
+решение по TeamCity Server на TEST; для ЛР5 — review другого участника.
+
+**Evidence.** `docs/evidence/lr03/README.md`: 10 скриншотов и 14 текстовых
+файлов, включая сохранность после `down/up` и после перезагрузки ВМ.
+
+**Готовность.** Agent work, Human work и Report по ЛР3 выполнены; статус
+ЛР3 — DONE. Следующая задача — ЛР4 (CI/TeamCity/Docker Hub) по команде
+исполнителя.

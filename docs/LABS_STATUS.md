@@ -4,7 +4,7 @@
 |---|---|---|---|
 | LR1 | Техническое задание | DONE | Актуальное ТЗ |
 | LR2 | Виртуализация | DONE | Три ВМ (TEST/STAGE/PROD) на VirtualBox 7.2.20: Ubuntu 24.04.5, XFCE+LightDM, 192.168.56.11–13, шесть ping без потерь, clone и служба приложения с HTTP 200; отчёт `docs/reports/ЛР2, Первухин Роман, 241-3211.docx` создан и проверен 17.10.2026 |
-| LR3 | Контейнеризация | TODO | Dockerfile, Compose, PostgreSQL volume |
+| LR3 | Контейнеризация | DONE | Dockerfile и Compose (app + PostgreSQL 16 + том), вход/студенты, три ВМ с Docker; сохранность проверена после `down/up` и перезагрузки ВМ; отчёт `docs/reports/ЛР3, Гурьев Сергей, 241-3211.docx` создан и проверен 26.11.2026 |
 | LR4 | Непрерывная интеграция | TODO | TeamCity CI + Docker Hub |
 | LR5 | Непрерывная доставка | TODO | Feature/dev workflow + deploy STAGE |
 | LR6 | Статический анализ | TODO | Quality/security/secret gates |
@@ -39,3 +39,20 @@ SW-09 изменён по решению пользователя в польз�
 PostgreSQL, миграция, транзакции, backup/restore. Это не завершение ЛР3/8.
 Статусы лабораторных не повышены; Human work ЛР2 и отчёт остаются открытыми.
 Evidence: `docs/evidence/app-01-foundation.md`.
+
+## ЛР3 — 2026-11-26
+
+Реализованы APP-02/03: вход по логину и паролю, JWT access/refresh в
+HttpOnly-cookie, выход с отзывом refresh, роли administrator/teacher/student,
+список студентов и добавление студента с аудитом. Добавлены `Dockerfile`,
+`docker-compose.yml` (PostgreSQL 16, постоянный том `studentledger_pgdata`) и
+entrypoint с миграциями.
+
+Три ВМ (Ubuntu 24.04.5, VirtualBox 7.1.10) пересозданы на текущем хосте,
+Docker 29.10.1 и Compose v5.8.0 установлены на TEST/STAGE/PROD. На TEST
+развёрнут стек, добавлены два студента, проверены роли и аудит. Сохранность
+подтверждена после `docker compose down/up` и после перезагрузки ВМ.
+44 локальных теста пройдены. Evidence: `docs/evidence/lr03/`.
+Публикация: ветка `feature/lr3-docker-and-app`, commit `d026728`; PR ещё не
+создан. Отчёт `docs/reports/ЛР3, Гурьев Сергей, 241-3211.docx` и PDF созданы,
+14 страниц, 9 рисунков, 3 таблицы; проверены рендером. Статус ЛР3 — DONE.

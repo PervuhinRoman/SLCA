@@ -1,0 +1,6 @@
+   operation    | result  |          occurred_at          
+----------------+---------+-------------------------------
+ student.create | success | 2026-11-25 21:25:38.167339+00
+ student.create | success | 2026-11-25 21:27:07.904309+00
+(2 rows)
+

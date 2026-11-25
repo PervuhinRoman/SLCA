@@ -1,0 +1,3 @@
+NAME                IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+studentledger-app   studentledger-app    "/entrypoint.sh"         app       2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+studentledger-db    postgres:16-alpine   "docker-entrypoint.s…"   db        2 minutes ago   Up 2 minutes (healthy)   5432/tcp

@@ -1,0 +1,16 @@
+[
+    {
+        "CreatedAt": "2026-11-25T21:24:40Z",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "bf6dc212d6b8c042c425126e0fa8febe702a3c4398ea554f7157c347ed5fbb0b",
+            "com.docker.compose.project": "studentledger",
+            "com.docker.compose.version": "5.8.0",
+            "com.docker.compose.volume": "pgdata"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/studentledger_pgdata/_data",
+        "Name": "studentledger_pgdata",
+        "Options": null,
+        "Scope": "local"
+    }
+]

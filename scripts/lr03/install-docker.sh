@@ -8,6 +8,11 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 export DEBIAN_FRONTEND=noninteractive
+
+# The Ubuntu live installer may leave a file:/cdrom source that breaks apt.
+grep -rls 'file:/cdrom' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | xargs -r rm -f || true
+sed -i '\#file:///cdrom#d' /etc/apt/sources.list || true
+
 apt-get update -y
 apt-get install -y ca-certificates curl
 

@@ -19,35 +19,35 @@
 
 | ID | Кратко | Implementation | Tests | План PR (не реализация) |
 |---|---|---|---|---|
-| FR-01 | Просмотр списка студентов | TBD | TBD | APP-03 |
-| FR-02 | Добавление студента | TBD | TBD | APP-03 |
-| FR-03 | Изменение студента | TBD | TBD | APP-04 |
-| FR-04 | Подсчёт студентов по форме обучения | TBD | TBD | APP-06 |
-| FR-05 | Просмотр учебного плана | TBD | TBD | APP-07 |
-| FR-06 | Добавление/изменение учебного плана | TBD | TBD | APP-07 |
-| FR-07 | Часы и форма отчётности дисциплины | TBD | TBD | APP-07 |
-| FR-08 | Просмотр журнала успеваемости | TBD | TBD | APP-08 частично → APP-09 |
-| FR-09 | Добавление оценки | TBD | TBD | APP-08 частично → APP-09 |
-| FR-10 | Изменение оценки | TBD | TBD | APP-09 |
-| FR-11 | Вход по логину/паролю + JWT | TBD | TBD | APP-02 |
-| FR-12 | Refresh/logout | TBD | TBD | APP-02 |
-| FR-13 | RBAC | TBD | TBD | С каждой функцией → APP-09 полностью |
-| FR-14 | Управление пользователями | TBD | TBD | APP-05 |
+| FR-01 | Просмотр списка студентов | `app/students.py`: администратор/преподаватель видят всех, студент — только себя | `test_students.py` (роли, своя запись) |
+| FR-02 | Добавление студента | `app/students.py`: форма, валидация, User+Student+AuditLog в одной транзакции | `test_students.py` (успех, неполные поля, дубль логина) |
+| FR-03 | Изменение студента | TBD | TBD |
+| FR-04 | Подсчёт студентов по форме обучения | TBD | TBD |
+| FR-05 | Просмотр учебного плана | TBD | TBD |
+| FR-06 | Добавление/изменение учебного плана | TBD | TBD |
+| FR-07 | Часы и форма отчётности дисциплины | TBD | TBD |
+| FR-08 | Просмотр журнала успеваемости | TBD | TBD |
+| FR-09 | Добавление оценки | TBD | TBD |
+| FR-10 | Изменение оценки | TBD | TBD |
+| FR-11 | Вход по логину/паролю + JWT | `app/auth.py`, `app/security.py`: access/refresh в HttpOnly-cookie | `test_students.py` (успех, неверный пароль, блокировка) |
+| FR-12 | Refresh/logout | `app/auth.py`: ротация refresh, отзыв при выходе | `test_students.py` (ротация, отзыв) |
+| FR-13 | RBAC | `require_roles`; администратор/преподаватель/студент для студентов | `test_students.py` (403 для student/teacher) |
+| FR-14 | Управление пользователями | TBD (создание учётной записи вместе со студентом — часть APP-03) | TBD |
 
 ## Security requirements
 
 | ID | Кратко | Implementation | Tests |
 |---|---|---|---|
-| SEC-01 | Обязательная аутентификация | TBD | TBD |
-| SEC-02 | БД не публикуется наружу | TBD | TBD |
-| SEC-03 | Секреты вне репозитория | `app/config.py`, `.env.example`, `.gitignore` | `test_foundation.py`: скрытие конфигурации; JWT ещё нет |
-| SEC-04 | Валидация + ORM/parameterized queries | `app/db/models.py`, `session.py`; основа, без пользовательского ввода | `test_database.py`: constraints, SQL как данные; формы позже |
-| SEC-05 | Безопасное журналирование ошибок | `app/logging.py`, `app/main.py`, `migrations/env.py`; частично | `test_foundation.py`, evidence отказа БД; auth ещё нет |
-| SEC-06 | Backup перед изменением схемы | `docs/APP01_DATABASE.md`; ручная процедура | `docs/evidence/app-01-foundation.md`: реальное тестовое восстановление; стенды позже |
-| SEC-07 | JWT access/refresh | TBD | TBD |
-| SEC-08 | Hash passwords | TBD | TBD |
-| SEC-09 | RBAC enforcement | TBD | TBD |
-| SEC-10 | Audit log | `AuditLog` и атомарная транзакция; только основа | Откат данных и аудита проверен; аудит функций пока TBD |
+| SEC-01 | Обязательная аутентификация | `app/security.py`: защищённые маршруты, redirect на вход | `test_students.py` |
+| SEC-02 | БД не публикуется наружу | `docker-compose.yml`: у `db` нет `ports` | `09-volume-inspect.txt`, конфигурация |
+| SEC-03 | Секреты вне репозитория | `.env.example`, `.gitignore`; пароли в `.env` на ВМ | проверка Git, evidence |
+| SEC-04 | Валидация + ORM/parameterized queries | формы и ORM; ограничения БД | `test_database.py`, `test_students.py` |
+| SEC-05 | Безопасное журналирование ошибок | `app/logging.py`, обработчики ошибок; журнал входа | `test_foundation.py` |
+| SEC-06 | Backup перед изменением схемы | `docs/APP01_DATABASE.md`; схема APP-02/03 не менялась | evidence APP-01 |
+| SEC-07 | JWT access/refresh | `app/security.py`: HS256, TTL, refresh в БД | `test_students.py` |
+| SEC-08 | Hash passwords | bcrypt через passlib | `test_students.py`: хеш не равен паролю |
+| SEC-09 | RBAC enforcement | `require_roles` для маршрутов студентов | `test_students.py` (403) |
+| SEC-10 | Audit log | `student.create` в одной транзакции | `test_students.py`, `11-audit.txt` |
 
 ## Data requirements
 
@@ -56,7 +56,7 @@
 | DATA-01 | PK/FK | Миграция `0001`, User/Student/AuditLog/RefreshSession | `test_database.py`; остальные сущности позже |
 | DATA-02 | Grade только для существующих Student/Discipline | TBD | TBD |
 | DATA-03 | Ссылочная целостность | FK RESTRICT, уникальная User–Student 1:1 | `test_database.py`: отсутствующий User, запрет удаления/дубликатов |
-| DATA-04 | Persistence после рестарта | TBD | TBD |
+| DATA-04 | Persistence после рестарта | Compose-том `studentledger_pgdata`; entrypoint с миграциями | `04`–`08`, `12` evidence: данные после `down/up` и перезагрузки ВМ |
 
 ## Acceptance
 
@@ -110,3 +110,17 @@ python-jose добавляются с аутентификацией APP-02. INF
 DATA-04 и общие AC не закрыты локальным restart: нужны продуктовый сценарий,
 контейнеризация со своим постоянным томом и реальные стенды.
 Все результаты и ограничения: `docs/evidence/app-01-foundation.md`.
+
+## Результат ЛР3 — 2026-11-26
+
+APP-02/03 реализованы: вход, JWT access/refresh, выход с отзывом, роли,
+список студентов и добавление с аудитом. Покрыты FR-01, FR-02, FR-11, FR-12,
+SEC-01, SEC-07–10, UI-01–04 (русские подписи и сообщения), DATA-04
+(сохранность после перезапуска контейнеров и ВМ). FR-13 закрыт частично:
+проверены ограничения для студентов, полная матрица появится с журналом
+(APP-09). FR-14 не реализован: учётная запись создаётся вместе со студентом,
+но управления пользователями, смены ролей и блокировки в UI ещё нет.
+
+44 локальных теста пройдены на PostgreSQL 17. Стенды TEST/STAGE/PROD
+пересозданы на Ubuntu 24.04.5 с Docker 29.10.1 и Compose v5.8.0.
+Evidence: `docs/evidence/lr03/`. Отчёт ЛР3 ещё не создан.

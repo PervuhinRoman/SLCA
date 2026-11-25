@@ -1,0 +1,26 @@
+ 21:51:45 up 3 min,  1 user,  load average: 0.36, 0.38, 0.17
+studentledger-test
+NAME                IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+studentledger-app   studentledger-app    "/entrypoint.sh"         app       23 minutes ago   Up 55 seconds (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+studentledger-db    postgres:16-alpine   "docker-entrypoint.s…"   db        23 minutes ago   Up 55 seconds (healthy)   5432/tcp
+
+--- rows after VM reboot ---
+ last_name | first_name | group_name 
+-----------+------------+------------
+ Петров    | Пётр       | 241-3211
+ Сидоров   | Сидор      | 241-3212
+(2 rows)
+
+
+--- health ---
+HTTP/1.1 200 OK
+date: Wed, 25 Nov 2026 21:51:46 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: same-origin
+cache-control: no-store
+
+{"status":"ok"}
