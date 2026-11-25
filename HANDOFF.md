@@ -898,10 +898,12 @@ feature-ветки. Сборка #2 (`dev`): успешно выполнены `
 push тегов `2` и `dev`, `docker logout`. Docker Hub API подтверждает теги
 `dev` и `2`. Логи и скриншоты: `docs/evidence/lr04/`.
 
-**Публикация.** Ветка `feature/lr4-teamcity-ci`, commit `c266d98`
-(актуальный HEAD уточняется после документационного коммита). PR в dev
-создаётся отдельно; merge не выполнялся. Пользователь самостоятельно создал
-и слил PR #5 для ЛР3, поэтому `dev` уже содержит ЛР3.
+**Публикация.** Ветка `feature/lr4-teamcity-ci` отправлена в origin (commit
+`e4d55b3`). Создан PR #6: https://github.com/PervuhinRoman/SLCA/pull/6
+(→ `dev`). Для сборки prod создан выпускной PR #7:
+https://github.com/PervuhinRoman/SLCA/pull/7 (`dev` → `prod`). Пользователь
+самостоятельно создал и слил PR #5 для ЛР3, поэтому `dev` уже содержит ЛР3.
+Merge PR #6/#7 агентом не выполнялся.
 
 **Осталось.** Выпуск dev → prod (PR) и сборка/тег `prod`; отчёт ЛР4.
 Токен Docker Hub хранится только в TeamCity и не в Git; при утечке отозвать.
