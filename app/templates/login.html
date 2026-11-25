@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Вход — StudentLedger{% endblock %}
+{% block content %}
+<section class="card login-card">
+  <h1>Вход в систему</h1>
+  <p class="muted">Введите учётные данные, выданные администратором.</p>
+  {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/login" class="form">
+    <label for="login">Логин</label>
+    <input id="login" name="login" type="text" value="{{ login }}" autocomplete="username"
+           required autofocus>
+    <label for="password">Пароль</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+    <button type="submit" class="primary">Войти</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Новый студент — StudentLedger{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Новый студент</h1>
+    <p class="muted">Заполните обязательные поля. Все поля с подписью обязательны, кроме отчества.</p>
+  </div>
+  <a class="button" href="/students">К списку</a>
+</div>
+
+{% if errors %}
+<div class="alert" role="alert">
+  Запись не сохранена. Исправьте отмеченные поля.
+</div>
+{% endif %}
+
+<form method="post" action="/students/new" class="form card">
+  <h2>Сведения о студенте</h2>
+
+  <label for="last_name">Фамилия</label>
+  <input id="last_name" name="last_name" type="text" maxlength="100"
+         value="{{ values.last_name|default('') }}" required>
+  {% if errors.last_name %}<p class="field-error">{{ errors.last_name }}</p>{% endif %}
+
+  <label for="first_name">Имя</label>
+  <input id="first_name" name="first_name" type="text" maxlength="100"
+         value="{{ values.first_name|default('') }}" required>
+  {% if errors.first_name %}<p class="field-error">{{ errors.first_name }}</p>{% endif %}
+
+  <label for="patronymic">Отчество <span class="optional">(необязательно)</span></label>
+  <input id="patronymic" name="patronymic" type="text" maxlength="100"
+         value="{{ values.patronymic|default('') }}">
+  {% if errors.patronymic %}<p class="field-error">{{ errors.patronymic }}</p>{% endif %}
+
+  <label for="admission_year">Год поступления</label>
+  <input id="admission_year" name="admission_year" type="number" inputmode="numeric"
+         min="1900" max="2100" step="1" placeholder="2024"
+         value="{{ values.admission_year|default('') }}" required>
+  <p class="hint">Четыре цифры, например 2024.</p>
+  {% if errors.admission_year %}<p class="field-error">{{ errors.admission_year }}</p>{% endif %}
+
+  <label for="education_form">Форма обучения</label>
+  <select id="education_form" name="education_form" required>
+    <option value="">Выберите форму</option>
+    {% for form in education_forms %}
+    <option value="{{ form }}" {% if values.education_form == form %}selected{% endif %}>{{ form }}</option>
+    {% endfor %}
+  </select>
+  {% if errors.education_form %}<p class="field-error">{{ errors.education_form }}</p>{% endif %}
+
+  <label for="group_name">Группа</label>
+  <input id="group_name" name="group_name" type="text" maxlength="64"
+         value="{{ values.group_name|default('') }}" required>
+  {% if errors.group_name %}<p class="field-error">{{ errors.group_name }}</p>{% endif %}
+
+  <h2>Учётная запись для входа</h2>
+  <p class="muted">Студент сможет войти и увидеть только собственную запись.</p>
+
+  <label for="login">Логин</label>
+  <input id="login" name="login" type="text" maxlength="128" autocomplete="off"
+         value="{{ values.login|default('') }}" required>
+  <p class="hint">От 3 до 128 символов: латинские буквы, цифры, точка, дефис, подчёркивание.</p>
+  {% if errors.login %}<p class="field-error">{{ errors.login }}</p>{% endif %}
+
+  <label for="password">Пароль</label>
+  <input id="password" name="password" type="password" minlength="8" maxlength="128"
+         autocomplete="new-password" required>
+  <p class="hint">Не короче 8 символов. Передайте пароль студенту лично.</p>
+  {% if errors.password %}<p class="field-error">{{ errors.password }}</p>{% endif %}
+
+  <div class="actions">
+    <button type="submit" class="primary">Сохранить</button>
+    <a class="button" href="/students">Отмена</a>
+  </div>
+</form>
+{% endblock %}

@@ -4,43 +4,59 @@
 Требования: актуальное ТЗ в `docs/reports/ЛР1, Первухин Роман, 241-3211.docx`
 и одноимённый PDF. Перед работой читать `AGENTS.md` и context-файлы.
 
-## Текущий этап: APP-01 / ЛР2
+## Текущий этап: ЛР3 — контейнеризация
 
-Подготовлена основа PostgreSQL/SQLAlchemy/Alembic: User, Student, AuditLog
-и хранилище refresh-сессий. Конфигурация, схема, тесты и backup/restore:
-[инструкция APP-01](docs/APP01_DATABASE.md).
-`GET /health` по-прежнему возвращает HTTP 200 и `{"status":"ok"}` без БД.
-UI, JWT и FR-01–FR-14 ещё не реализованы. Полная приёмка G-05 / SYS-01 /
-AC-02 и лабораторные стенды этим PR не закрываются.
+Реализованы вход по логину и паролю, JWT access/refresh в HttpOnly-cookie,
+выход с отзывом refresh, роли `administrator`/`teacher`/`student`, список
+студентов и добавление студента с аудитом. Добавлены `Dockerfile` и
+`docker-compose.yml` (приложение + PostgreSQL 16 + постоянный том `pgdata`).
+`GET /health` по-прежнему возвращает HTTP 200 без БД.
+
+Остальные функции (изменение студента, учебные планы, журнал) — следующие
+этапы по [плану](docs/LABS_PLAN.md). Полная приёмка FR-01–FR-14 этим не
+закрывается.
 
 ## Локальный запуск (Python 3.12)
 
-Из корня проекта:
+Нужны PostgreSQL 16+ и переменные окружения `DATABASE_URL` и `JWT_SECRET`
+(не менее 32 символов):
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
+export DATABASE_URL='postgresql+psycopg://studentledger:password@127.0.0.1:5432/studentledger'
+export JWT_SECRET="$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')"
+.venv/bin/python -m alembic upgrade head
+.venv/bin/python -m app.cli create-admin --login admin
+.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-В другом терминале:
+Откройте `http://127.0.0.1:8000/login`, войдите администратором и добавьте
+студента. Проверка живости: `curl -i http://127.0.0.1:8000/health`.
+
+## Запуск в Docker Compose
 
 ```bash
-curl --fail-with-body -i http://127.0.0.1:8000/health
+cp .env.example .env    # задать POSTGRES_PASSWORD и JWT_SECRET
+docker compose up -d --build
+docker compose exec -e ADMIN_PASSWORD='<пароль>' app python -m app.cli create-admin --login admin
+docker compose ps
 ```
 
-Остановка сервера: Ctrl+C. После установки запуск выполняется последней
-командой `uvicorn`; воспроизводимый запуск всего продукта с PostgreSQL
-одной командой относится к следующим этапам.
+Приложение: `http://<host>:8000`. PostgreSQL наружу не публикуется, данные
+хранятся в томе `studentledger_pgdata`; `docker compose down` не удаляет данные,
+`down -v` — удаляет. Подробности: [LR3_RUNBOOK](docs/LR3_RUNBOOK.md).
+
+## Лабораторная работа № 3
+
+- [Пошаговая настройка Docker на трёх ВМ и демонстрация сохранности](docs/LR3_RUNBOOK.md).
+- [Состояние и следующий шаг](HANDOFF.md).
 
 ## Лабораторная работа № 2
 
 - [Сверка источников](docs/SOURCE_REVIEW.md).
 - [Пошаговая настройка TEST/STAGE/PROD](docs/LR2_RUNBOOK.md).
 - [Подтверждения и шаблон фактических результатов](docs/evidence/lr02/README.md).
-- [Состояние и следующий шаг](HANDOFF.md).
-
-Не переходить к ЛР3 до завершения ручной части и отчёта ЛР2.
 
 ## План реализации
 

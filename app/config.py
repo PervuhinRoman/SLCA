@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     )
     app_env: Literal["test", "stage", "prod"] = "test"
     database_url: SecretStr | None = None
+    jwt_secret: SecretStr | None = None
+    access_token_minutes: int = 15
+    refresh_token_days: int = 7
+    cookie_secure: bool = False
 
     @field_validator("database_url")
     @classmethod
@@ -33,10 +37,24 @@ class Settings(BaseSettings):
             raise ValueError("DATABASE_URL: требуется URL postgresql+psycopg с именем БД") from None
         return value
 
+    @field_validator("jwt_secret")
+    @classmethod
+    def validate_jwt_secret(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is None:
+            return value
+        if len(value.get_secret_value()) < 32:
+            raise ValueError("JWT_SECRET: требуется не менее 32 символов")
+        return value
+
     def require_database_url(self) -> str:
         if self.database_url is None:
             raise ConfigurationError("Задайте DATABASE_URL для подключения к PostgreSQL")
         return self.database_url.get_secret_value()
+
+    def require_jwt_secret(self) -> str:
+        if self.jwt_secret is None:
+            raise ConfigurationError("Задайте JWT_SECRET (не менее 32 символов)")
+        return self.jwt_secret.get_secret_value()
 
 
 @lru_cache

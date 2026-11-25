@@ -15,7 +15,7 @@ def test_health_without_database(monkeypatch, tmp_path):
     with TestClient(app) as client:
         assert client.get("/health").json() == {"status": "ok"}
         assert client.get("/health").status_code == 200
-        for path in ("/docs", "/redoc", "/openapi.json", "/students", "/users"):
+        for path in ("/docs", "/redoc", "/openapi.json", "/users"):
             assert client.get(path).status_code == 404
 
 
@@ -32,7 +32,7 @@ def test_environment_overrides_dotenv(monkeypatch, tmp_path):
     env.write_text("APP_ENV=stage\nDATABASE_URL=postgresql+psycopg://u:secret@localhost/db\n")
     settings = Settings(_env_file=env)
     assert settings.app_env == "test"
-    assert "secret" not in repr(settings)
+    assert "u:secret@" not in repr(settings)
     assert "secret" in settings.require_database_url()
 
 
