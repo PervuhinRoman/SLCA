@@ -11,6 +11,16 @@
 | `01-project.png` | Проект StudentLedger, сборки #1 (feature) и #2 (dev) успешны |
 | `02-dev-build.png` | Сборка #2 ветки dev: шаги Build image (1м07с) и Push image (41с) |
 | `03-agents.png` | Агент `test-agent` подключён к серверу |
+| `05-prod-build.png` | Сборка #3 ветки prod: успешно, шаг Push image |
+| `06-project-three-builds.png` | Три успешные сборки: feature, dev, prod |
+
+## Сборки
+
+| # | Ветка | Результат | Публикация |
+|---|---|---|---|
+| 1 | feature/lr4-teamcity-ci | Success | пропущена (feature-ветка) |
+| 2 | dev | Success | теги `2` и `dev` |
+| 3 | prod | Success | теги `3` и `prod` |
 
 ## Текстовые подтверждения
 
@@ -21,7 +31,9 @@
 | `03-build1-log.txt` | Feature-сборка: образ собран, push пропущен с сообщением |
 | `04-build2-log.txt` | Dev-сборка: `docker login`, push тегов `2` и `dev`, выход из registry |
 | `05-agent.json` | Агент `test-agent` зарегистрирован |
-| `06-dockerhub-tags.json` | В Docker Hub есть теги `dev` и `2` (digest, дата) |
+| `06-dockerhub-tags.json` | В Docker Hub есть теги `dev`, `2`, `prod`, `3` (digest, дата) |
+| `07-build3.json` | Сборка #3: `status=SUCCESS`, ветка `prod` |
+| `07-build3-log.txt` | Prod-сборка: push тегов `3` и `prod`, digest, выход из registry |
 
 ## Что проверено
 
@@ -35,11 +47,10 @@
 
 ## Ограничения
 
-- Сборка `prod` не запускалась: ветка `prod` ещё не содержит Dockerfile,
-  пока не выполнен выпуск dev → prod. После слияния выпуска нужно запустить
-  сборку `prod` и проверить тег `prod` в Docker Hub.
 - TeamCity использует внутреннюю HSQLDB (учебный стенд); для production
   нужен PostgreSQL.
 - Агент запущен с `--user root` из-за доступа к сокету Docker; это
   ограничение стенда, не production-схема.
+- Сборки выполняются на TEST при 3 ГБ RAM вместе с сервером и агентом,
+  поэтому занимают около двух минут.
 - Отчёт ЛР4 ещё не создан.

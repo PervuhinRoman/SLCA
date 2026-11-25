@@ -1,0 +1,449 @@
+Build 'StudentLedger / Build and push image' #3, branch 'prod'
+Triggered 2026-11-25 23:42:54 by 'admin'
+Started 2026-11-25 23:43:02 on agent 'test-agent'
+Finished 2026-11-25 23:47:27 with status NORMAL 'Success'
+VCS revisions: 'SLCA_GitHub' (Git, instance id 2): '5c22e21315527f38ff7825d69e33a5a8f3bd76e1' (branch: 'refs/heads/prod')
+TeamCity URL http://localhost:8111/buildConfiguration/StudentLedger_Build/3 
+TeamCity server version is 2026.2.2 (build 239308), server timezone: UTC
+
+[23:42:54]W: bt2 (4m:32s)
+[23:42:54]i: TeamCity server version is 2026.2.2 (build 239308)
+[23:42:55] : Finalize build settings
+[23:42:55] : The build is removed from the queue to be prepared for the start
+[23:42:55] : Collecting changes in 1 VCS root (5s)
+[23:42:55] :	 [Collecting changes in 1 VCS root] VCS Root details
+[23:42:55] :		 [VCS Root details] "SLCA GitHub" {instance id=2, parent internal id=2, parent id=SLCA_GitHub, description: "https://github.com/PervuhinRoman/SLCA.git#refs/heads/dev"}
+[23:42:55]i:	 [Collecting changes in 1 VCS root] Loading current repository state for VCS root 'SLCA GitHub' (2s)
+[23:42:55]i:		 [Loading current repository state for VCS root 'SLCA GitHub'] VCS root 'SLCA GitHub': git -c credential.helper= -c credential.helper=/opt/teamcity/temp/credHelper2506103140544587485.sh ls-remote origin
+[23:42:58]i:	 [Collecting changes in 1 VCS root] Detecting changes in VCS root 'SLCA GitHub' (used in 'Build and push image')
+[23:42:58]i:	 [Collecting changes in 1 VCS root] Will collect changes for 'SLCA GitHub' starting from revision c37d58ddb85bbf6a94e4010fe6e20e18fb2cb347
+[23:42:58]i:	 [Collecting changes in 1 VCS root] VCS revisions for 'SLCA GitHub' - c37d58ddb85bbf6a94e4010fe6e20e18fb2cb347..c37d58ddb85bbf6a94e4010fe6e20e18fb2cb347
+[23:42:58]i:	 [Collecting changes in 1 VCS root] Processing combined checkout rule for 'SLCA GitHub' 
+[23:42:58]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': git -c credential.helper= -c credential.helper=/opt/teamcity/temp/credHelper4416254545170896646.sh ls-remote origin
+[23:42:59]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': git -c credential.helper= -c credential.helper=/opt/teamcity/temp/credHelper5182551669128477218.sh fetch --progress --no-tags --no-show-forced-updates --recurse-submodules=no -- https://github.com/PervuhinRoman/SLCA.git +refs/heads/prod:refs/heads/prod
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': remote: Enumerating objects: 1, done.        
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': remote: Counting objects: 100% (1/1)        
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': remote: Counting objects: 100% (1/1), done.        
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)        
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': Receiving objects: 100% (1/1)
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': Receiving objects: 100% (1/1), 987 bytes | 987.00 KiB/s, done.
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': warning: fetch normally indicates which branches had a forced update,
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': but that check has been disabled; to re-enable, use '--show-forced-updates'
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': flag or run 'git config fetch.showForcedUpdates true'
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub': From https://github.com/PervuhinRoman/SLCA
+[23:43:01]i:	 [Collecting changes in 1 VCS root] VCS root 'SLCA GitHub':    816ac3e..5c22e21  prod       -> prod
+[23:43:01]i:	 [Collecting changes in 1 VCS root] Done collecting changes for 'SLCA GitHub': 1 changes collected 1 changes persisted, total time: 2s,981ms, persisting time: 61ms
+[23:43:01] : Compute revision for 'SLCA GitHub'
+[23:43:01] :	 [Compute revision for 'SLCA GitHub'] Upper limit revision: 5c22e21315527f38ff7825d69e33a5a8f3bd76e1
+[23:43:01]i:	 [Compute revision for 'SLCA GitHub'] MaxModId = 4
+[23:43:01] :	 [Compute revision for 'SLCA GitHub'] Computed revision: 5c22e21315527f38ff7825d69e33a5a8f3bd76e1
+[23:43:01] : Starting the build on the agent "test-agent"
+[23:43:03]i: Agent time zone: Europe/London
+[23:43:03]i: Agent is running under JRE: 21.0.13.1+2-LTS
+[23:43:03]W: Free disk space requirement (2m:33s)
+[23:44:53] :	 [Free disk space requirement] Removing files to meet 3 GB of free disk space required for directory /opt/buildagent/system (only 1.49 GB is free now).
+[23:44:53] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:32] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:32] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:32] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:33] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:35] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:36]W:	 [Free disk space requirement] Free disk space requirement of 3 GB could not be met for directory /opt/buildagent/system (only 1.49 GB is free)
+[23:45:36] : Updating tools for build
+[23:45:36] :	 [Updating tools for build] Tools are not required for the build
+[23:45:36] : Clearing temporary directory: /opt/buildagent/temp/buildTmp
+[23:45:36]i: Preparing performance monitoring data directory: /opt/buildagent/system/perfmon
+[23:45:36]i: Performance monitor is using command line: [perl, /opt/buildagent/system/perfmon/scripts/vmstatlinux.pl, /opt/buildagent/system/perfmon/temp/3/perfmon.csv, 1000]
+[23:45:36]i: Starting performance monitoring process
+[23:45:36]i: Performance monitoring process started
+[23:45:36] : Publishing internal artifacts
+[23:45:36] :	 [Publishing internal artifacts] Publishing 1 file using [WebPublisher]
+[23:45:36] :	 [Publishing internal artifacts] Publishing 1 file using [ArtifactsCachePublisherImpl]
+[23:45:36]i:	 [Publishing internal artifacts] Will publish 1 artifact(s) to TeamCity node with id MAIN_SERVER
+[23:45:36] : Using vcs information from agent file: ff5bb6045ebec35e.xml
+[23:45:36] : Checkout directory: /opt/buildagent/work/ff5bb6045ebec35e
+[23:45:36]W: Updating sources: auto checkout (on agent) (3s)
+[23:45:36] :	 [Updating sources] Will use agent side checkout
+[23:45:36]W:	 [Updating sources] VCS Root: SLCA GitHub (3s)
+[23:45:36] :		 [VCS Root: SLCA GitHub] revision: 5c22e21315527f38ff7825d69e33a5a8f3bd76e1
+[23:45:36] :		 [VCS Root: SLCA GitHub] Git version: 2.56.1.0
+[23:45:36]W:		 [VCS Root: SLCA GitHub] Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e) (2s)
+[23:45:36] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git rev-parse --is-shallow-repository
+[23:45:37] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git config core.sparseCheckout true
+[23:45:37] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git config http.sslCAInfo
+[23:45:37] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git show-ref
+[23:45:37] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper14669974270907027046.sh ls-remote origin
+[23:45:38] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git show-ref refs/remotes/origin/prod
+[23:45:38]W:			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] show-ref command failed, empty result will be returned: /usr/bin/git show-ref refs/remotes/origin/prod command failed.
+exit code: 1
+[23:45:38] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] 'git fetch' required: 'refs/remotes/origin/prod' is not found in the local repository clone.
+[23:45:38] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod (1s)
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] remote: Enumerating objects: 1, done.        
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] remote: Counting objects: 100% (1/1)        
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] remote: Counting objects: 100% (1/1), done.        
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)        
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] warning: fetch normally indicates which branches had a forced update,
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] but that check has been disabled; to re-enable, use '--show-forced-updates'
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] flag or run 'git config fetch.showForcedUpdates true'
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod] From https://github.com/PervuhinRoman/SLCA
+[23:45:39]i:				 [/usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper18006285076202466228.sh fetch --progress --no-show-forced-updates --recurse-submodules=no -- origin +refs/heads/prod:refs/remotes/origin/prod]  * [new branch]      prod       -> origin/prod
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git log -n1 --pretty=format:%H%x20%s 5c22e21315527f38ff7825d69e33a5a8f3bd76e1 --
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git branch
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git branch --create-reflog --track prod refs/remotes/origin/prod
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git update-ref refs/heads/prod 5c22e21315527f38ff7825d69e33a5a8f3bd76e1
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git -c credential.helper= -c credential.helper=/opt/buildagent/temp/buildTmp/credHelper17442357129702592442.sh checkout -q -f prod
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] Cleaning SLCA GitHub in /opt/buildagent/work/ff5bb6045ebec35e the file set ALL_UNTRACKED
+[23:45:39] :			 [Update checkout directory (/opt/buildagent/work/ff5bb6045ebec35e)] /usr/bin/git clean -f -d -x
+[23:45:39]W: Free disk space requirement (1m:18s)
+[23:45:44] :	 [Free disk space requirement] Removing files to meet 3 GB of free disk space required for directory /opt/buildagent/system (only 1.49 GB is free now).
+[23:45:44] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:44] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:44] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:44] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:45:45] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:57] :	 [Free disk space requirement] Free disk space under directory /opt/buildagent/system is 1.49 GB, required 3 GB. Will continue cleaning.
+[23:46:58]W:	 [Free disk space requirement] Free disk space requirement of 3 GB could not be met for directory /opt/buildagent/system (only 1.49 GB is free)
+[23:46:58] : Build preparation done
+[23:46:58]W: Step 1/2: Build image (Command Line) (7s)
+[23:46:58]i:	 [Step 1/2] Content of /opt/buildagent/temp/agentTmp/custom_script16125708334590963303 file: 
+set -e
+IMAGE="ahdyshba/studentledger"
+BRANCH="prod"
+SAFE_BRANCH=$(echo "$BRANCH" | tr '/' '-')
+docker build --pull -t "$IMAGE:3" .
+docker tag "$IMAGE:3" "$IMAGE:$SAFE_BRANCH"
+docker image ls "$IMAGE"
+
+[23:46:58] :	 [Step 1/2] Starting: /opt/buildagent/temp/agentTmp/custom_script16125708334590963303 
+[23:46:58] :	 [Step 1/2] in directory: /opt/buildagent/work/ff5bb6045ebec35e
+[23:47:00]W:	 [Step 1/2] #0 building with "default" instance using docker driver
+[23:47:00]W:	 [Step 1/2] 
+[23:47:00]W:	 [Step 1/2] #1 [internal] load build definition from Dockerfile
+[23:47:00]W:	 [Step 1/2] #1 transferring dockerfile:
+[23:47:00]W:	 [Step 1/2] #1 transferring dockerfile: 856B 0.0s done
+[23:47:00]W:	 [Step 1/2] #1 DONE 0.2s
+[23:47:00]W:	 [Step 1/2] 
+[23:47:00]W:	 [Step 1/2] #2 [internal] load metadata for docker.io/library/python:3.12-slim
+[23:47:02]W:	 [Step 1/2] #2 DONE 1.8s
+[23:47:02]W:	 [Step 1/2] 
+[23:47:02]W:	 [Step 1/2] #3 [internal] load .dockerignore
+[23:47:02]W:	 [Step 1/2] #3 transferring context:
+[23:47:02]W:	 [Step 1/2] #3 transferring context: 199B 0.0s done
+[23:47:02]W:	 [Step 1/2] #3 DONE 0.2s
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #4 [internal] load build context
+[23:47:03]W:	 [Step 1/2] #4 DONE 0.0s
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #5 [ 1/10] FROM docker.io/library/python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b
+[23:47:03]W:	 [Step 1/2] #5 resolve docker.io/library/python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b
+[23:47:03]W:	 [Step 1/2] #5 resolve docker.io/library/python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b 0.2s done
+[23:47:03]W:	 [Step 1/2] #5 DONE 0.2s
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #4 [internal] load build context
+[23:47:03]W:	 [Step 1/2] #4 transferring context: 51.14kB 0.0s done
+[23:47:03]W:	 [Step 1/2] #4 DONE 0.2s
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #6 [ 3/10] RUN groupadd --system app     && useradd --system --gid app --home-dir /app --no-create-home app
+[23:47:03]W:	 [Step 1/2] #6 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #7 [ 7/10] COPY migrations ./migrations
+[23:47:03]W:	 [Step 1/2] #7 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #8 [ 8/10] COPY app ./app
+[23:47:03]W:	 [Step 1/2] #8 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #9 [ 5/10] RUN pip install --no-cache-dir -r requirements.txt
+[23:47:03]W:	 [Step 1/2] #9 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #10 [ 6/10] COPY alembic.ini ./
+[23:47:03]W:	 [Step 1/2] #10 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #11 [ 9/10] COPY docker/entrypoint.sh /entrypoint.sh
+[23:47:03]W:	 [Step 1/2] #11 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #12 [ 2/10] WORKDIR /app
+[23:47:03]W:	 [Step 1/2] #12 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #13 [ 4/10] COPY requirements.txt ./
+[23:47:03]W:	 [Step 1/2] #13 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #14 [10/10] RUN chmod 0755 /entrypoint.sh && chown -R app:app /app
+[23:47:03]W:	 [Step 1/2] #14 CACHED
+[23:47:03]W:	 [Step 1/2] 
+[23:47:03]W:	 [Step 1/2] #15 exporting to image
+[23:47:03]W:	 [Step 1/2] #15 exporting layers 0.0s done
+[23:47:03]W:	 [Step 1/2] #15 exporting manifest sha256:c3fe7364c78c0eb0797bc8334578f3f1581b873d154eee7b048b222316fa21b5 0.0s done
+[23:47:03]W:	 [Step 1/2] #15 exporting config sha256:69bfe64087248e433c3532693f2a43ef6507685b37d1d6f18249c423d3b870d2 0.0s done
+[23:47:03]W:	 [Step 1/2] #15 exporting attestation manifest sha256:ca000bcd31bb04a983bb1c475587a356898ac64d7ab895a24e021d5e96df07ad
+[23:47:03]W:	 [Step 1/2] #15 exporting attestation manifest sha256:ca000bcd31bb04a983bb1c475587a356898ac64d7ab895a24e021d5e96df07ad 0.1s done
+[23:47:03]W:	 [Step 1/2] #15 exporting manifest list sha256:5aeaf342d86c12c68a94cc68984275db02ee58fb5610592b769c4bb51388d424
+[23:47:03]W:	 [Step 1/2] #15 exporting manifest list sha256:5aeaf342d86c12c68a94cc68984275db02ee58fb5610592b769c4bb51388d424 0.1s done
+[23:47:03]W:	 [Step 1/2] #15 naming to docker.io/ahdyshba/studentledger:3
+[23:47:04]W:	 [Step 1/2] #15 naming to docker.io/ahdyshba/studentledger:3 0.0s done
+[23:47:04]W:	 [Step 1/2] #15 unpacking to docker.io/ahdyshba/studentledger:3 0.0s done
+[23:47:04]W:	 [Step 1/2] #15 DONE 0.7s
+[23:47:05] :	 [Step 1/2] IMAGE                                            ID             DISK USAGE   CONTENT SIZE   EXTRA
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:1                         f66fd7398775        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:2                         ea27344e1828        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:3                         5aeaf342d86c        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:dev                       ea27344e1828        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:feature-lr4-teamcity-ci   f66fd7398775        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] ahdyshba/studentledger:prod                      5aeaf342d86c        309MB         71.4MB        
+[23:47:05] :	 [Step 1/2] Process exited with code 0
+[23:47:05]W: Step 2/2: Push image (Command Line) (11s)
+[23:47:05]i:	 [Step 2/2] Content of /opt/buildagent/temp/agentTmp/custom_script8860665109618739377 file: 
+set -e
+BRANCH="prod"
+if [ "$BRANCH" != "dev" ] && [ "$BRANCH" != "prod" ]; then
+  echo "Ветка $BRANCH: публикация в Docker Hub не требуется."
+  exit 0
+fi
+echo "*******" | docker login -u "ahdyshba" --password-stdin
+docker push "ahdyshba/studentledger:3"
+docker push "ahdyshba/studentledger:$BRANCH"
+docker logout
+
+[23:47:05] :	 [Step 2/2] Starting: /opt/buildagent/temp/agentTmp/custom_script8860665109618739377 
+[23:47:05] :	 [Step 2/2] in directory: /opt/buildagent/work/ff5bb6045ebec35e
+[23:47:07] :	 [Step 2/2] Login Succeeded
+[23:47:07]W:	 [Step 2/2] 
+[23:47:07]W:	 [Step 2/2] WARNING! Your credentials are stored unencrypted in '/root/.docker/config.json'.
+[23:47:07]W:	 [Step 2/2] Configure a credential helper to remove this warning. See
+[23:47:07]W:	 [Step 2/2] https://docs.docker.com/go/credential-store/
+[23:47:07]W:	 [Step 2/2] 
+[23:47:07] :	 [Step 2/2] The push refers to repository [docker.io/ahdyshba/studentledger]
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:07] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:07] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:07] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:07] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 44136fa355b3: Already exists
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:08] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 30cf67d7101c: Layer already exists
+[23:47:08] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:08] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:08] :	 [Step 2/2] 88039cc28379: Waiting
+[23:47:08] :	 [Step 2/2] e3e428093f5e: Layer already exists
+[23:47:08] :	 [Step 2/2] 88039cc28379: Waiting
+[23:47:08] :	 [Step 2/2] 34f0fedea075: Waiting
+[23:47:08] :	 [Step 2/2] 3f95922fcdf3: Waiting
+[23:47:08] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 40748add9f4f: Layer already exists
+[23:47:08] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:08] :	 [Step 2/2] 34dd5c0fea4e: Waiting
+[23:47:08] :	 [Step 2/2] c99bf002e5e2: Waiting
+[23:47:08] :	 [Step 2/2] 88039cc28379: Layer already exists
+[23:47:08] :	 [Step 2/2] 34f0fedea075: Waiting
+[23:47:08] :	 [Step 2/2] 043cb74dcfa3: Waiting
+[23:47:08] :	 [Step 2/2] 3f95922fcdf3: Layer already exists
+[23:47:08] :	 [Step 2/2] 286d8c291daa: Layer already exists
+[23:47:09] :	 [Step 2/2] 53facf0a3943: Waiting
+[23:47:09] :	 [Step 2/2] 34dd5c0fea4e: Waiting
+[23:47:09] :	 [Step 2/2] c99bf002e5e2: Waiting
+[23:47:09] :	 [Step 2/2] 34f0fedea075: Layer already exists
+[23:47:09] :	 [Step 2/2] 043cb74dcfa3: Waiting
+[23:47:09] :	 [Step 2/2] 1cfee6f91aad: Waiting
+[23:47:09] :	 [Step 2/2] 043cb74dcfa3: Layer already exists
+[23:47:09] :	 [Step 2/2] 53facf0a3943: Layer already exists
+[23:47:09] :	 [Step 2/2] eb80ff09d8fd: Waiting
+[23:47:09] :	 [Step 2/2] 34dd5c0fea4e: Layer already exists
+[23:47:09] :	 [Step 2/2] c99bf002e5e2: Layer already exists
+[23:47:09] :	 [Step 2/2] 1cfee6f91aad: Layer already exists
+[23:47:09] :	 [Step 2/2] eb80ff09d8fd: Layer already exists
+[23:47:09] :	 [Step 2/2] 5112868ab324: Pushed
+[23:47:12] :	 [Step 2/2] 3: digest: sha256:5aeaf342d86c12c68a94cc68984275db02ee58fb5610592b769c4bb51388d424 size: 856
+[23:47:12] :	 [Step 2/2] The push refers to repository [docker.io/ahdyshba/studentledger]
+[23:47:12] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:12] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:12] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:12] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:12] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:12] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:12] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:12] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:12] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:12] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:12] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:12] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:12] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:12] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:12] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:12] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:12] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:12] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:12] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:12] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 44136fa355b3: Already exists
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] 40748add9f4f: Layer already exists
+[23:47:13] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:13] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:13] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:13] :	 [Step 2/2] 30cf67d7101c: Waiting
+[23:47:13] :	 [Step 2/2] 88039cc28379: Waiting
+[23:47:13] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:13] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:14] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:14] :	 [Step 2/2] 30cf67d7101c: Layer already exists
+[23:47:14] :	 [Step 2/2] 88039cc28379: Waiting
+[23:47:14] :	 [Step 2/2] 5112868ab324: Waiting
+[23:47:14] :	 [Step 2/2] 3f95922fcdf3: Waiting
+[23:47:14] :	 [Step 2/2] e3e428093f5e: Waiting
+[23:47:14] :	 [Step 2/2] 34f0fedea075: Waiting
+[23:47:14] :	 [Step 2/2] 88039cc28379: Waiting
+[23:47:14] :	 [Step 2/2] 5112868ab324: Already exists
+[23:47:14] :	 [Step 2/2] 3f95922fcdf3: Waiting
+[23:47:14] :	 [Step 2/2] e3e428093f5e: Layer already exists
+[23:47:14] :	 [Step 2/2] 286d8c291daa: Waiting
+[23:47:14] :	 [Step 2/2] 34dd5c0fea4e: Waiting
+[23:47:14] :	 [Step 2/2] 88039cc28379: Layer already exists
+[23:47:14] :	 [Step 2/2] 286d8c291daa: Layer already exists
+[23:47:14] :	 [Step 2/2] 34dd5c0fea4e: Layer already exists
+[23:47:14] :	 [Step 2/2] 53facf0a3943: Waiting
+[23:47:14] :	 [Step 2/2] eb80ff09d8fd: Waiting
+[23:47:14] :	 [Step 2/2] 1cfee6f91aad: Waiting
+[23:47:14] :	 [Step 2/2] 34f0fedea075: Layer already exists
+[23:47:14] :	 [Step 2/2] c99bf002e5e2: Waiting
+[23:47:14] :	 [Step 2/2] 3f95922fcdf3: Layer already exists
+[23:47:14] :	 [Step 2/2] 043cb74dcfa3: Waiting
+[23:47:14] :	 [Step 2/2] 53facf0a3943: Waiting
+[23:47:14] :	 [Step 2/2] eb80ff09d8fd: Waiting
+[23:47:14] :	 [Step 2/2] 1cfee6f91aad: Waiting
+[23:47:14] :	 [Step 2/2] c99bf002e5e2: Waiting
+[23:47:14] :	 [Step 2/2] 043cb74dcfa3: Waiting
+[23:47:14] :	 [Step 2/2] 043cb74dcfa3: Layer already exists
+[23:47:14] :	 [Step 2/2] 53facf0a3943: Layer already exists
+[23:47:14] :	 [Step 2/2] eb80ff09d8fd: Layer already exists
+[23:47:14] :	 [Step 2/2] 1cfee6f91aad: Layer already exists
+[23:47:14] :	 [Step 2/2] c99bf002e5e2: Layer already exists
+[23:47:16] :	 [Step 2/2] prod: digest: sha256:5aeaf342d86c12c68a94cc68984275db02ee58fb5610592b769c4bb51388d424 size: 856
+[23:47:16] :	 [Step 2/2] Removing login credentials for https://index.docker.io/v1/
+[23:47:16] :	 [Step 2/2] Process exited with code 0
+[23:47:16]i: Stopping performance monitoring process
+[23:47:26]i: Performance monitoring process stopped
+[23:47:26]i: Publishing performance monitoring build stages data
+[23:47:26] : Publishing artifacts
+[23:47:26] :	 [Publishing artifacts] Collecting files to publish: [/opt/buildagent/system/perfmon/temp/3/perfmon.csv=>.teamcity/perfmon/, /opt/buildagent/temp/agentTmp/build_stages.txt=>.teamcity/perfmon/]
+[23:47:26] : Publishing internal artifacts
+[23:47:26] :	 [Publishing artifacts] Publishing 2 files using [WebPublisher]: /opt/buildagent/system/perfmon/temp/3/perfmon.csv, /opt/buildagent/temp/agentTmp/build_stages.txt => .teamcity/perfmon
+[23:47:26] :	 [Publishing artifacts] Publishing 2 files using [ArtifactsCachePublisherImpl]: /opt/buildagent/system/perfmon/temp/3/perfmon.csv, /opt/buildagent/temp/agentTmp/build_stages.txt => .teamcity/perfmon
+[23:47:26]i:	 [Publishing artifacts] Will publish 2 artifact(s) to TeamCity node with id MAIN_SERVER
+[23:47:26] :	 [Publishing internal artifacts] Publishing 1 file using [WebPublisher]
+[23:47:26] :	 [Publishing internal artifacts] Publishing 1 file using [ArtifactsCachePublisherImpl]
+[23:47:26]i:	 [Publishing internal artifacts] Will publish 1 artifact(s) to TeamCity node with id MAIN_SERVER
+[23:47:26] : Publishing internal artifacts
+[23:47:27] : Build finished

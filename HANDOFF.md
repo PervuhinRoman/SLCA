@@ -898,15 +898,23 @@ feature-ветки. Сборка #2 (`dev`): успешно выполнены `
 push тегов `2` и `dev`, `docker logout`. Docker Hub API подтверждает теги
 `dev` и `2`. Логи и скриншоты: `docs/evidence/lr04/`.
 
-**Публикация.** Ветка `feature/lr4-teamcity-ci` отправлена в origin (commit
-`e4d55b3`). Создан PR #6: https://github.com/PervuhinRoman/SLCA/pull/6
-(→ `dev`). Для сборки prod создан выпускной PR #7:
-https://github.com/PervuhinRoman/SLCA/pull/7 (`dev` → `prod`). Пользователь
-самостоятельно создал и слил PR #5 для ЛР3, поэтому `dev` уже содержит ЛР3.
-Merge PR #6/#7 агентом не выполнялся.
+**Публикация.** Ветка `feature/lr4-teamcity-ci` отправлена в origin. PR #6
+(https://github.com/PervuhinRoman/SLCA/pull/6, → `dev`) остаётся открытым.
+Выпускной PR #7 (https://github.com/PervuhinRoman/SLCA/pull/7, `dev` → `prod`)
+слит 26.11.2026 с разрешения пользователя; после этого сборка `prod` #3
+прошла успешно, в Docker Hub опубликованы теги `3` и `prod`. Merge PR #6
+агентом не выполнялся.
 
-**Осталось.** Выпуск dev → prod (PR) и сборка/тег `prod`; отчёт ЛР4.
-Токен Docker Hub хранится только в TeamCity и не в Git; при утечке отозвать.
+**Осталось.** Слить PR #6 (код CI в dev). Отчёт ЛР4 создан:
+`docs/reports/ЛР4, Гурьев Сергей, 241-3211.docx` и одноимённый PDF,
+10 страниц, 5 рисунков, 2 таблицы; титульный лист, оглавление с номерами
+страниц, A4, поля 30/15/20/20 мм, Times New Roman 14. Проверен рендером.
+Статус ЛР4 — DONE. Токен Docker Hub хранится только в TeamCity и не в Git;
+при утечке отозвать.
+
+**Следующая задача — ЛР5.** Требуется review другого участника (п. 5
+методички); без него ЛР5 не считается выполненной. Заготовки ветки
+`feature/lr5-cd-stage` (APP-04) и deploy-скриптов уже начаты.
 
 **Ограничения.** Внутренняя HSQLDB TeamCity — учебный режим; агент запущен
 от root из-за сокета Docker; на TEST одновременно работают TeamCity Server,
