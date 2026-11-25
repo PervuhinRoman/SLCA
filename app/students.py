@@ -1,7 +1,8 @@
-"""Student list and creation (FR-01, FR-02, SEC-09, SEC-10, UI-01–UI-04)."""
+"""Student list, creation and editing (FR-01–FR-03, SEC-09, SEC-10)."""
 import re
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -29,7 +30,7 @@ def _values(form) -> dict[str, str]:
     }
 
 
-def validate(values: dict[str, str]) -> dict[str, str]:
+def validate(values: dict[str, str], *, with_account: bool = True) -> dict[str, str]:
     errors: dict[str, str] = {}
     if not values["last_name"]:
         errors["last_name"] = "Укажите фамилию."
@@ -55,11 +56,12 @@ def validate(values: dict[str, str]) -> dict[str, str]:
     elif len(values["group_name"]) > 64:
         errors["group_name"] = "Группа: не более 64 символов."
 
-    if not LOGIN_RE.fullmatch(values["login"]):
-        errors["login"] = ("Логин: от 3 до 128 символов, латинские буквы, цифры, "
-                           "точка, дефис или подчёркивание.")
-    if not 8 <= len(values["password"]) <= 128:
-        errors["password"] = "Пароль: от 8 до 128 символов."
+    if with_account:
+        if not LOGIN_RE.fullmatch(values["login"]):
+            errors["login"] = ("Логин: от 3 до 128 символов, латинские буквы, цифры, "
+                               "точка, дефис или подчёркивание.")
+        if not 8 <= len(values["password"]) <= 128:
+            errors["password"] = "Пароль: от 8 до 128 символов."
     return errors
 
 
@@ -76,6 +78,7 @@ def students_list(request: Request, user: User = Depends(require_roles(
         "current_user": user,
         "students": rows,
         "created": request.query_params.get("created") == "1",
+        "updated": request.query_params.get("updated") == "1",
     })
 
 
@@ -137,3 +140,61 @@ async def student_create(request: Request,
         }, status_code=400)
 
     return RedirectResponse("/students?created=1", status_code=303)
+
+
+def _student_values(student: Student) -> dict[str, str]:
+    return {
+        "last_name": student.last_name,
+        "first_name": student.first_name,
+        "patronymic": student.patronymic or "",
+        "admission_year": str(student.admission_year),
+        "education_form": student.education_form,
+        "group_name": student.group_name,
+        "login": "",
+        "password": "",
+    }
+
+
+@router.get("/students/{student_id}/edit")
+def student_edit_form(student_id: UUID, request: Request,
+                      user: User = Depends(require_roles("administrator")),
+                      db: Session = Depends(get_db)):
+    student = db.get(Student, student_id)
+    if student is None:
+        raise HTTPException(status_code=404)
+    return templates.TemplateResponse(request, "students/edit.html", {
+        "current_user": user,
+        "values": _student_values(student),
+        "errors": {},
+        "student_id": student.id,
+    })
+
+
+@router.post("/students/{student_id}/edit")
+async def student_update(student_id: UUID, request: Request,
+                         user: User = Depends(require_roles("administrator")),
+                         db: Session = Depends(get_db)):
+    student = db.get(Student, student_id)
+    if student is None:
+        raise HTTPException(status_code=404)
+    values = _values(await request.form())
+    errors = validate(values, with_account=False)
+    if errors:
+        return templates.TemplateResponse(request, "students/edit.html", {
+            "current_user": user,
+            "values": values,
+            "errors": errors,
+            "student_id": student.id,
+        }, status_code=400)
+
+    student.last_name = values["last_name"]
+    student.first_name = values["first_name"]
+    student.patronymic = values["patronymic"] or None
+    student.admission_year = int(values["admission_year"])
+    student.education_form = values["education_form"]
+    student.group_name = values["group_name"]
+    db.add(AuditLog(user_id=user.id, operation="student.update",
+                    object_type="student", object_id=student.id,
+                    result="success"))
+    db.flush()
+    return RedirectResponse("/students?updated=1", status_code=303)

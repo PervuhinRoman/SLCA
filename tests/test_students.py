@@ -1,4 +1,6 @@
-"""APP-02/APP-03: authentication, students, RBAC and audit."""
+"""APP-02/APP-03/APP-04: authentication, students, RBAC and audit."""
+from uuid import uuid4
+
 import pytest
 from sqlalchemy import func, select
 
@@ -201,3 +203,83 @@ def test_refresh_rotates_token(client, database):
             RefreshSession.token_digest == token_digest(old_refresh)))
         assert old_row.revoked_at is not None
     assert client.get("/students").status_code == 200
+
+
+def _student_id(database, last_name):
+    with transaction(database) as session:
+        return session.scalar(select(Student.id).where(Student.last_name == last_name))
+
+
+def test_admin_edits_student_and_writes_audit(admin, database):
+    assert admin.post("/students/new", data=STUDENT_FORM,
+                      follow_redirects=False).status_code == 303
+    student_id = _student_id(database, "Иванов")
+
+    form = admin.get(f"/students/{student_id}/edit")
+    assert form.status_code == 200
+    assert "241-3211" in form.text
+
+    response = admin.post(f"/students/{student_id}/edit", data={
+        "last_name": "Иванов",
+        "first_name": "Иван",
+        "patronymic": "Иванович",
+        "admission_year": "2026",
+        "education_form": "заочная",
+        "group_name": "241-9999",
+    }, follow_redirects=False)
+    assert response.status_code == 303
+    assert response.headers["location"] == "/students?updated=1"
+
+    with transaction(database) as session:
+        student = session.get(Student, student_id)
+        assert student.group_name == "241-9999"
+        assert student.admission_year == 2026
+        assert student.education_form == "заочная"
+        audit = session.scalar(select(AuditLog).where(
+            AuditLog.object_id == student_id, AuditLog.operation == "student.update"))
+        assert audit is not None
+
+    page = admin.get("/students?updated=1")
+    assert "Изменения сохранены" in page.text
+
+
+def test_edit_validation_keeps_old_values(admin, database):
+    assert admin.post("/students/new", data=STUDENT_FORM,
+                      follow_redirects=False).status_code == 303
+    student_id = _student_id(database, "Иванов")
+
+    response = admin.post(f"/students/{student_id}/edit", data={
+        "last_name": "Иванов",
+        "first_name": "Иван",
+        "patronymic": "",
+        "admission_year": "1800",
+        "education_form": "очная",
+        "group_name": "241-0000",
+    })
+    assert response.status_code == 400
+    assert "от 1900" in response.text
+    with transaction(database) as session:
+        assert session.get(Student, student_id).group_name == "241-3211"
+
+
+def test_teacher_and_student_cannot_edit(client, database):
+    teacher_id = add_user(database, "teacher", "teacher")
+    add_student(database, teacher_id, "Учитель", "teacher")
+    student_id = _student_id(database, "Учитель")
+
+    assert login(client, "teacher").status_code == 303
+    assert client.get(f"/students/{student_id}/edit", follow_redirects=False).status_code == 403
+    assert client.post(f"/students/{student_id}/edit", data=STUDENT_FORM,
+                       follow_redirects=False).status_code == 403
+
+    client.post("/logout", follow_redirects=False)
+    own_id = add_user(database, "s-own", "student")
+    add_student(database, own_id, "Собственный", "s-own")
+    own_student_id = _student_id(database, "Собственный")
+    assert login(client, "s-own").status_code == 303
+    assert client.get(f"/students/{own_student_id}/edit",
+                      follow_redirects=False).status_code == 403
+
+
+def test_edit_unknown_student_returns_404(admin):
+    assert admin.get(f"/students/{uuid4()}/edit").status_code == 404

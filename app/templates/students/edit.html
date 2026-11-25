@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Редактирование студента — StudentLedger{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Редактирование студента</h1>
+    <p class="muted">Изменения сохраняются в базе данных и фиксируются в журнале аудита.</p>
+  </div>
+  <a class="button" href="/students">К списку</a>
+</div>
+
+{% if errors %}
+<div class="alert" role="alert">Изменения не сохранены. Исправьте отмеченные поля.</div>
+{% endif %}
+
+<form method="post" action="/students/{{ student_id }}/edit" class="form card">
+  <h2>Сведения о студенте</h2>
+
+  <label for="last_name">Фамилия</label>
+  <input id="last_name" name="last_name" type="text" maxlength="100"
+         value="{{ values.last_name|default('') }}" required>
+  {% if errors.last_name %}<p class="field-error">{{ errors.last_name }}</p>{% endif %}
+
+  <label for="first_name">Имя</label>
+  <input id="first_name" name="first_name" type="text" maxlength="100"
+         value="{{ values.first_name|default('') }}" required>
+  {% if errors.first_name %}<p class="field-error">{{ errors.first_name }}</p>{% endif %}
+
+  <label for="patronymic">Отчество <span class="optional">(необязательно)</span></label>
+  <input id="patronymic" name="patronymic" type="text" maxlength="100"
+         value="{{ values.patronymic|default('') }}">
+  {% if errors.patronymic %}<p class="field-error">{{ errors.patronymic }}</p>{% endif %}
+
+  <label for="admission_year">Год поступления</label>
+  <input id="admission_year" name="admission_year" type="number" inputmode="numeric"
+         min="1900" max="2100" step="1" placeholder="2024"
+         value="{{ values.admission_year|default('') }}" required>
+  <p class="hint">Четыре цифры, например 2024.</p>
+  {% if errors.admission_year %}<p class="field-error">{{ errors.admission_year }}</p>{% endif %}
+
+  <label for="education_form">Форма обучения</label>
+  <select id="education_form" name="education_form" required>
+    <option value="">Выберите форму</option>
+    {% for form in education_forms %}
+    <option value="{{ form }}" {% if values.education_form == form %}selected{% endif %}>{{ form }}</option>
+    {% endfor %}
+  </select>
+  {% if errors.education_form %}<p class="field-error">{{ errors.education_form }}</p>{% endif %}
+
+  <label for="group_name">Группа</label>
+  <input id="group_name" name="group_name" type="text" maxlength="64"
+         value="{{ values.group_name|default('') }}" required>
+  {% if errors.group_name %}<p class="field-error">{{ errors.group_name }}</p>{% endif %}
+
+  <div class="actions">
+    <button type="submit" class="primary">Сохранить изменения</button>
+    <a class="button" href="/students">Отмена</a>
+  </div>
+</form>
+{% endblock %}

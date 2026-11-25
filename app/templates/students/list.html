@@ -17,11 +17,15 @@
 {% if created %}
 <div class="alert success" role="status">Студент добавлен и сохранён в базе данных.</div>
 {% endif %}
+{% if updated %}
+<div class="alert success" role="status">Изменения сохранены и записаны в журнал аудита.</div>
+{% endif %}
 
 {% if students %}
 <table class="table">
   <thead>
-    <tr><th>ФИО</th><th>Год поступления</th><th>Форма обучения</th><th>Группа</th></tr>
+    <tr><th>ФИО</th><th>Год поступления</th><th>Форма обучения</th><th>Группа</th>
+      {% if current_user.role == "administrator" %}<th></th>{% endif %}</tr>
   </thead>
   <tbody>
   {% for s in students %}
@@ -30,6 +34,9 @@
       <td>{{ s.admission_year }}</td>
       <td>{{ s.education_form }}</td>
       <td>{{ s.group_name }}</td>
+      {% if current_user.role == "administrator" %}
+      <td><a class="button" href="/students/{{ s.id }}/edit">Изменить</a></td>
+      {% endif %}
     </tr>
   {% endfor %}
   </tbody>
